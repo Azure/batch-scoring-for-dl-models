@@ -1,0 +1,6 @@
+-e git+https://github.com/Azure/azure-functions-python-worker.git@0800b4deb7641157ca8fd62563351ca54e20f552#egg=azure_functions_python
+grpcio==1.9.1
+grpcio-tools==1.9.1
+protobuf==3.6.0
+six==1.11.0
+

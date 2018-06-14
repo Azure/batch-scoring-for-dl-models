@@ -1,0 +1,8 @@
+*.swp
+*.vscode
+*.ipynb_checkpoints
+*/__pycache__
+
+bait/config.py
+py36
+data
