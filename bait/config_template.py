@@ -1,9 +1,15 @@
 CREDENTIALS = {
+  # the following fields can be found from creating a service principal
+  #   please reference ___ for instructions on how to create a service principal
   'aad_client_id': '<str: aad_client_id>',
   'aad_secret': '<str: aad_secret>',
   'aad_tenant': '<str: aad_tenant>',
+
+  # the following fields can be found from your storage account
   'storage_account_name': '<str: storage_account_name>',
   'storage_account_key': '<str: storage_account_key',
+
+  # Enter the desired username/password for ssh-ing into your batch ai cluster
   'admin_user_name': '<str: username_to_login>',
   'admin_user_password': '<str: password_to_login>'
 }
