@@ -3,28 +3,26 @@
 This tutorial demonstrates how to deploy a deep learning model to Azure for batch scoring.
 
 ### File System
-```md
-/project-root
---/bait
-----/cluster_setup.py
-----/fileshare_setup.py
-----/job_setup.py
-----/config_template.py
-----/config.py*
---/data
-----/pytorch_classification
---/model
-----/pytorch_classification 
---/scoring_script
-----/pytorch_classification
-------/score0.py
---/training_script
-----/pytorch_classification
-------/train0.ipynb
-------/train0.py
---/func <-- where we run our Function from
-----# TODO
-```
+.
++-- bait
+|   +-- cluster_setup.py
+|   +-- fileshare_setup.py
+|   +-- job_setup.py
+|   +-- config_template.py
+|   +-- config.py
++-- data
+|   +-- pytorch_classification
++-- model
+|   +-- pytorch_classification 
++-- scoring_script
+|   +-- pytorch_classification
+|       +-- score0.py
++-- training_script
+|   +-- pytorch_classification
+|       +-- train0.ipynb
+|       +-- train0.py
++-- func <-- where we run our Function from
+|   +-- # TODO
     
 
 There are a few main folders to take note of in this repository:
