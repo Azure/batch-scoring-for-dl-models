@@ -3,28 +3,45 @@
 This tutorial demonstrates how to deploy a deep learning model to Azure for batch scoring.
 
 ### File System
+```
 .
-+-- bait
-|   +-- cluster_setup.py
-|   +-- fileshare_setup.py
-|   +-- job_setup.py
-|   +-- config_template.py
-|   +-- config.py
-+-- data
-|   +-- pytorch_classification
-+-- model
-|   +-- pytorch_classification 
-+-- scoring_script
-|   +-- pytorch_classification
-|       +-- score0.py
-+-- training_script
-|   +-- pytorch_classification
-|       +-- train0.ipynb
-|       +-- train0.py
-+-- func <-- where we run our Function from
-|   +-- # TODO
-    
+├── bait/
+│   ├── cluster_setup.py
+│   ├── config.py
+│   ├── config_template.py
+│   ├── fileshare_setup.py
+│   ├── job_setup.py
+├── scoring_script/
+│   ├── pytorch_classification/
+│   │   └── score0.py
+│   └── tf_mnist/
+│       └── score0.py
+├── training_script/
+|   ├── pytorch_classification/
+|   │   ├── train0.ipynb
+|   │   └── train0.py
+|   └── tf_mnist/
+|       ├── train0.ipynb
+|       └── train0.py
 
+--- Files below this point will be generated in the tutorial
+
+├── data/
+│   └── pytorch_classification/
+├── model/
+│   ├── pytorch_classification/
+│   └── tf_mnist/
+└── func/
+    ├── blobtrig/
+    │   ├── function.json
+    │   ├── host.json
+    │   ├── __init__.py
+    │   ├── readme.md
+    │   └── sample.dat
+    ├── host.json
+    ├── local.settings.json
+    └── requirements.txt
+```
 There are a few main folders to take note of in this repository:
 
 __/bait__
