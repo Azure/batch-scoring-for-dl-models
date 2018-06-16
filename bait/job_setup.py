@@ -29,17 +29,25 @@ batchai_client = batchai.BatchAIManagementClient(
 # ========================
 input_directories = [
   models.InputDirectory(
-    id='SCRIPTS',
+    id='SCRIPT',
     path='$AZ_BATCHAI_MOUNT_ROOT/{0}/{1}'.format(
       config.CLUSTER['file_share_mnt_path'], 
       config.AFS_PATHS['script_directory']
     )
   ),
   models.InputDirectory(
-    id='MODELS',
+    id='MODEL',
     path='$AZ_BATCHAI_MOUNT_ROOT/{0}/{1}'.format(
       config.CLUSTER['file_share_mnt_path'], 
-      os.path.join(config.AFS_PATHS['model_directory'], config.LOCAL['model_directory'])
+      config.AFS_PATHS['model_directory']
+    )
+  ),
+  # TODO this needs to be generated/provided by Functions V2
+  models.InputDirectory(
+    id='DATA',
+    path='$AZ_BATCHAI_MOUNT_ROOT/{0}/{1}'.format(
+      config.CLUSTER['file_share_mnt_path'],
+      config.AFS_PATHS['data_directory']
     )
   )
 ]
@@ -63,13 +71,22 @@ parameters = models.JobCreateParameters(
   input_directories=input_directories,
   output_directories=output_directories,
   std_out_err_path_prefix=std_output_path_prefix,
+  job_preparation=models.JobPreparation(
+    command_line="pip install scikit-image"
+  ),
   container_settings=models.ContainerSettings(
     image_source_registry=models.ImageSourceRegistry(
-      image='tensorflow/tensorflow:1.8.0-gpu-py3'
+      # image='tensorflow/tensorflow:1.8.0-gpu-py3'
+      image='pytorch/pytorch:0.4_cuda9_cudnn7'
     )
   ),
   custom_toolkit_settings=models.CustomToolkitSettings(
-    command_line="python $AZ_BATCHAI_INPUT_SCRIPTS/conv_copy.py"
+    command_line=("python $AZ_BATCHAI_INPUT_SCRIPT/{0} " +
+        "--model $AZ_BATCHAI_INPUT_MODEL/{1} " +
+        "--data $AZ_BATCHAI_INPUT_DATA").format(
+      config.LOCAL['script_file'],
+      config.LOCAL['model_file']
+    )
   )
 )
 

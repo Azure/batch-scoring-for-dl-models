@@ -36,7 +36,10 @@ AFS_PATHS = {
   'results_directory': '<str: results_directory>',
 
   # ex. 'models' - directory for models
-  'model_directory': '<str: models_directory>'
+  'model_directory': '<str: models_directory>',
+
+  # TESTING ONLY - ex. 'models' - directory for models
+  'data_directory': 'data'
 }
 
 LOCAL = {

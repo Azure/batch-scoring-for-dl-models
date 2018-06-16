@@ -1,4 +1,5 @@
 import tensorflow as tf
+import os
 
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
@@ -7,8 +8,7 @@ mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 # Variables 
 # ==============
 
-model_output_path = './models/model0'
-
+model_output_path = os.path.join(os.path.dirname(__file__), '../../model/tf_mnist/model0/')
 
 # ==============
 # Define Input 
