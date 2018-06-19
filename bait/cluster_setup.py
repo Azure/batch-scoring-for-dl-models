@@ -34,7 +34,16 @@ resource = resource_management_client.resource_groups.create_or_update(
 )
 
 # =========================
-# Create Cluster
+# Create BAIT workspace
+# =========================
+_ = batchai_client.workspaces.create(
+  config.get('resource_group_name'),
+  config.get('workspace_name'),
+  config.get('region')
+).result()
+
+# =========================
+# Create BAIT Cluster
 # =========================
 volumes = models.MountVolumes(
   azure_file_shares=[
@@ -72,7 +81,6 @@ else:
   )
 
 parameters = models.ClusterCreateParameters(
-  location=config.get('region'),
   vm_size=config.get('cluster_vm_size'),
   vm_priority=config.get('cluster_vm_priority'),
   scale_settings=scale_settings,
@@ -82,12 +90,12 @@ parameters = models.ClusterCreateParameters(
   user_account_settings=models.UserAccountSettings(
     admin_user_name=config.get('admin_user_name'),
     admin_user_password=config.get('admin_user_password')
-    # admin_user_ssh_public_key=cfg.admin_ssh_key
   )
 )
 
 _ = batchai_client.clusters.create(
   resource_group_name=config.get('resource_group_name'), 
+  workspace_name=config.get('workspace_name'),
   cluster_name=config.get('cluster_name'),
   parameters=parameters
 ).result()
@@ -98,6 +106,7 @@ _ = batchai_client.clusters.create(
 # =========================
 cluster = batchai_client.clusters.get(
   config.get('resource_group_name'), 
+  config.get('workspace_name'),
   config.get('cluster_name')
 )
 

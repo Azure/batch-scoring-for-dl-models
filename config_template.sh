@@ -71,19 +71,20 @@ LOCAL_MODEL_PATH='../model/pytorch_classification'
 
 
 # =========================
-# BatchAI Job
+# BatchAI 
 # =========================
+
+# ex. 'my_workspace'
+WORKSPACE='<workspace name>'
+
+# ex. 'my_experiment'
+JOB_EXPERIMENT_NAME='<experiment name>'
 
 # ex. 'job' - each job has the id: <prefix_mm_dd_yyyy_time>
 JOB_NAME_PREFIX='<prefix of job name>'
 
 # ex. '1' - number of nodes to use for the job
 JOB_NODE_COUNT='<num nodes for job>'
-
-
-# =========================
-# BatchAI Cluster
-# =========================
 
 # ex. 'bob_nc6_0'
 CLUSTER_NAME='<name of your cluster>'
