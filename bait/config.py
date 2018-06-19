@@ -28,6 +28,9 @@ config['local_script_path']          = os.getenv('LOCAL_SCRIPT_PATH') # name of 
 config['local_model_file']           = os.getenv('LOCAL_MODEL_FILE')  # name of file (not path)
 config['local_model_path']           = os.getenv('LOCAL_MODEL_PATH')  # name of file (not path)
 
+config['workspace_name']             = os.getenv('WORKSPACE')
+
+config['job_experiment_name']        = os.getenv('JOB_EXPERIMENT_NAME')
 config['job_name_prefix']            = os.getenv('JOB_NAME_PREFIX')
 config['job_node_count']             = os.getenv('JOB_NODE_COUNT')
 

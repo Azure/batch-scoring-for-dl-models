@@ -25,6 +25,8 @@ batchai_client = batchai.BatchAIManagementClient(
 # ========================
 # Run Azure Batch AI Job
 # ========================
+
+# create input directories
 input_directories = [
   models.InputDirectory(
     id='SCRIPT',
@@ -49,20 +51,37 @@ input_directories = [
   )
 ]
 
+# create output directories
 output_directories = [
   models.OutputDirectory(
     id='RESULT',
     path_prefix='$AZ_BATCHAI_MOUNT_ROOT/{0}'.format(config.get('cluster_fs_mnt_path')),
-    path_suffix='results')]
+    path_suffix='results'
+  )
+]
 
+# get a reference to the cluster we want to use
+cluster = batchai_client.clusters.get(
+  resource_group_name=config.get('resource_group_name'), 
+  workspace_name=config.get('workspace_name'),
+  cluster_name=config.get('cluster_name')
+)
+
+# create an experiment (which is the logical container for a job)
+experiment = batchai_client.experiments.create(
+  resource_group_name=config.get('resource_group_name'),
+  workspace_name=config.get('workspace_name'),
+  experiment_name=config.get('job_experiment_name')
+)
+
+# set the std_out path prefix
 std_output_path_prefix = '$AZ_BATCHAI_MOUNT_ROOT/{0}'.format(config.get('cluster_fs_mnt_path'))
 
-cluster = batchai_client.clusters.get(config.get('resource_group_name'), config.get('cluster_name'))
+# set the job name [ex job_01_01_2000_111111]
 job_name = datetime.utcnow().strftime("{0}_%m_%d_%Y_%H%M%S".format(config.get('job_name_prefix')))
 
+# create parameters for the job
 parameters = models.JobCreateParameters(
-  experiment_name=config.get('job_name'),
-  location=config.get('region'),
   cluster=models.ResourceId(id=cluster.id),
   node_count=config.get('job_node_count'),
   input_directories=input_directories,
@@ -87,10 +106,14 @@ parameters = models.JobCreateParameters(
   )
 )
 
+# create job
 job = batchai_client.jobs.create(
   resource_group_name=config.get('resource_group_name'),
+  workspace_name=config.get('workspace_name'),
+  experiment_name=config.get('job_experiment_name'),
   job_name=job_name, 
   parameters=parameters
 ).result()
+
 print('Created Job: {}'.format(job.name))
 
