@@ -1,6 +1,6 @@
 from azure.storage.file import FileService
 import argparse
-import config
+from config import config
 import os
 
 '''
@@ -35,11 +35,11 @@ if __name__ == '__main__':
   # ===========================================
 
   file_service = FileService(
-    config.CREDENTIALS['storage_account_name'], 
-    config.CREDENTIALS['storage_account_key']
+    config.get('storage_account_name'),
+    config.get('storage_account_key')
   )
   file_service.create_share(
-    config.AFS_PATHS['azure_file_share_name'], 
+    config.get('afs_file_share_name'),
     fail_on_exist=False
   )
   print('Done')
@@ -51,20 +51,21 @@ if __name__ == '__main__':
   local_script_path = os.path.join(
     os.path.dirname(__file__), 
     os.path.join(
-      config.LOCAL['script_path'],
-      config.LOCAL['script_file'])
+      config.get('local_script_path'), 
+      config.get('local_script_file')
+    )
   )
 
   file_service.create_directory(
-    share_name=config.AFS_PATHS['azure_file_share_name'], 
-    directory_name=config.AFS_PATHS['script_directory'], 
+    share_name=config.get('afs_file_share_name'),
+    directory_name=config.get('afs_script_directory'), 
     fail_on_exist=False
   )
 
   file_service.create_file_from_path(
-    share_name=config.AFS_PATHS['azure_file_share_name'], 
-    directory_name=config.AFS_PATHS['script_directory'], 
-    file_name=config.LOCAL['script_file'], 
+    share_name=config.get('afs_file_share_name'), 
+    directory_name=config.get('afs_script_directory'), 
+    file_name=config.get('local_script_file'), 
     local_file_path=local_script_path
   )
 
@@ -75,21 +76,21 @@ if __name__ == '__main__':
   local_model_path = os.path.join(
     os.path.dirname(__file__), 
     os.path.join(
-      config.LOCAL['model_path'],
-      config.LOCAL['model_file']
+      config.get('local_model_path'),
+      config.get('local_model_file')
     )
   )
 
   file_service.create_directory(
-    share_name=config.AFS_PATHS['azure_file_share_name'],
-    directory_name=config.AFS_PATHS['model_directory'],
+    share_name=config.get('afs_file_share_name'),
+    directory_name=config.get('afs_model_directory'),
     fail_on_exist=False
   )
 
   file_service.create_file_from_path(
-    share_name=config.AFS_PATHS['azure_file_share_name'],
-    directory_name=config.AFS_PATHS['model_directory'],
-    file_name=config.LOCAL['model_file'],
+    share_name=config.get('afs_file_share_name'),
+    directory_name=config.get('afs_model_directory'),
+    file_name=config.get('local_model_file'),
     local_file_path=local_model_path
   )
 
@@ -119,8 +120,8 @@ if __name__ == '__main__':
     )
 
     file_service.create_directory(
-      share_name=config.AFS_PATHS['azure_file_share_name'],
-      directory_name=config.AFS_PATHS['data_directory'],
+      share_name=config.get('afs_file_share_name'),
+      directory_name=config.get('afs_data_directory'),
       fail_on_exist=False
     )
 
@@ -128,8 +129,8 @@ if __name__ == '__main__':
         local_data_file_path = os.path.join(local_data_dir_path, file)
         if os.path.isfile(local_data_file_path):
           file_service.create_file_from_path(
-            share_name=config.AFS_PATHS['azure_file_share_name'],
-            directory_name=config.AFS_PATHS['data_directory'],
+            share_name=config.get('afs_file_share_name'),
+            directory_name=config.get('afs_data_directory'),
             file_name=file,
             local_file_path=local_data_file_path
           )
