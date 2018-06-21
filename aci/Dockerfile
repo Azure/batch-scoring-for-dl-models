@@ -1,10 +1,10 @@
 FROM python:3.6-jessie
 
-WORKDIR /script
-ADD . /script
+WORKDIR /job
+ADD /job /job
 
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
-CMD ["python", "script/job_setup.py"]
+CMD ["python", "job_setup.py"]
 
 

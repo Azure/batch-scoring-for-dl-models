@@ -54,7 +54,7 @@ volumes = models.MountVolumes(
       ),
       azure_file_url='https://{0}.file.core.windows.net/{1}'.format(
         config.get('storage_account_name'),
-        config.get('file_share_name')
+        config.get('afs_file_share_name')
       ),
       relative_mount_path=config.get('cluster_fs_mnt_path')
     )
