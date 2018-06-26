@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
+from datetime import datetime
 from skimage import io, transform
 from torch.utils.data import DataLoader
 
@@ -151,10 +152,16 @@ if __name__ == '__main__':
     help='The path where the data your want to score are located',
     default='../../data/pytorch_classification/cifar/test/'
   )
+  parser.add_argument(
+    '--output',
+    help='the path where the results should be stored',
+    default='.'
+  )
   args = parser.parse_args()
 
   model_path = args.model
   data_path = args.data
+  output_path = args.output
 
   net = Net()
   net = load_weights(net, model_path)
@@ -174,19 +181,22 @@ if __name__ == '__main__':
 
   # score!
   with torch.no_grad():
-    for img in dataloader:
+    time = datetime.utcnow().strftime("%m_%d_%Y_%H%M%S")
+    with open(os.path.join(output_path, 'scores_{0}'.format(time)), "w") as file:
+      for img in dataloader:
 
-      # enforce shape (img in batch, channels, height, width)
-      img = img.view([4, 3, 32, 32])
+        # enforce shape (img in batch, channels, height, width)
+        img = img.view([4, 3, 32, 32])
 
-      # cast tensor to float
-      img = img.float()
-          
-      outputs = net(img.cuda())
-      _, predicted = torch.max(outputs.data, 1)
+        # cast tensor to float
+        img = img.float()
+            
+        outputs = net(img.cuda())
+        _, predicted = torch.max(outputs.data, 1)
 
-      print('Predicted: ', ' '.join('%5s' % classes[predicted[j]]
-                                      for j in range(4)))
+        # write to output
+        file.write(' '.join('%5s' % classes[predicted[j]] for j in range(4)))
+        file.write('\n')
 
 
 
