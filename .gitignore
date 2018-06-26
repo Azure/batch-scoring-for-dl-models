@@ -4,7 +4,7 @@
 *__pycache__
 
 # never commit config (as it contains secrets)
-config.sh
+.env
 
 # do not commit venv folder
 py36
