@@ -31,22 +31,22 @@ input_directories = [
   models.InputDirectory(
     id='SCRIPT',
     path='$AZ_BATCHAI_MOUNT_ROOT/{0}/{1}'.format(
-      config.get('cluster_fs_mnt_path'),
-      config.get('afs_script_directory'))
+      config.get('cluster_container_mnt_path'),
+      config.get('fs_script_directory'))
   ),
   models.InputDirectory(
     id='MODEL',
     path='$AZ_BATCHAI_MOUNT_ROOT/{0}/{1}'.format(
-      config.get('cluster_fs_mnt_path'),
-      config.get('afs_model_directory')
+      config.get('cluster_container_mnt_path'),
+      config.get('fs_model_directory')
     )
   ),
-  # TODO this needs to be generated/provided by Functions V2
+  # TODO this should be generated/provided by Functions V2
   models.InputDirectory(
     id='DATA',
     path='$AZ_BATCHAI_MOUNT_ROOT/{0}/{1}'.format(
-      config.get('cluster_fs_mnt_path'),
-      config.get('afs_data_directory')
+      config.get('cluster_container_mnt_path'),
+      config.get('fs_data_directory')
     )
   )
 ]
@@ -55,7 +55,7 @@ input_directories = [
 output_directories = [
   models.OutputDirectory(
     id='RESULT',
-    path_prefix='$AZ_BATCHAI_MOUNT_ROOT/{0}'.format(config.get('cluster_fs_mnt_path')),
+    path_prefix='$AZ_BATCHAI_MOUNT_ROOT/{0}'.format(config.get('cluster_container_mnt_path')),
     path_suffix='results'
   )
 ]
@@ -75,7 +75,7 @@ experiment = batchai_client.experiments.create(
 )
 
 # set the std_out path prefix
-std_output_path_prefix = '$AZ_BATCHAI_MOUNT_ROOT/{0}'.format(config.get('cluster_fs_mnt_path'))
+std_output_path_prefix = '$AZ_BATCHAI_MOUNT_ROOT/{0}'.format(config.get('cluster_container_mnt_path'))
 
 # set the job name [ex job_01_01_2000_111111]
 job_name = datetime.utcnow().strftime("{0}_%m_%d_%Y_%H%M%S".format(config.get('job_name_prefix')))
@@ -99,7 +99,8 @@ parameters = models.JobCreateParameters(
   custom_toolkit_settings=models.CustomToolkitSettings(
     command_line=("python $AZ_BATCHAI_INPUT_SCRIPT/{0} " +
         "--model $AZ_BATCHAI_INPUT_MODEL/{1} " +
-        "--data $AZ_BATCHAI_INPUT_DATA").format(
+        "--data $AZ_BATCHAI_INPUT_DATA " +
+        "--output $AZ_BATCHAI_OUTPUT_RESULT").format(
       config.get('local_script_file'),
       config.get('local_model_file')
     )

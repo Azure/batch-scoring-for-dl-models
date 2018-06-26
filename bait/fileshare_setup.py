@@ -1,4 +1,5 @@
 from azure.storage.file import FileService
+from azure.storage.blob import BlockBlobService
 import argparse
 from config import config
 import os
@@ -31,18 +32,18 @@ if __name__ == '__main__':
   args = parser.parse_args()
 
   # ===========================================
-  # create & setup azure file share
+  # create & setup azure blob as share
   # ===========================================
 
-  file_service = FileService(
-    config.get('storage_account_name'),
-    config.get('storage_account_key')
-  )
-  file_service.create_share(
-    config.get('afs_file_share_name'),
+  # azure blob container (bfs)
+  block_blob_service = BlockBlobService(
+    account_name=config.get('storage_account_name'), 
+    account_key=config.get('storage_account_key')
+  ) 
+  block_blob_service.create_container(
+    config.get('azure_container_name'),
     fail_on_exist=False
-  )
-  print('Done')
+  ) 
 
   # ===========================================
   # create directory for storing the scripts
@@ -56,17 +57,13 @@ if __name__ == '__main__':
     )
   )
 
-  file_service.create_directory(
-    share_name=config.get('afs_file_share_name'),
-    directory_name=config.get('afs_script_directory'), 
-    fail_on_exist=False
-  )
-
-  file_service.create_file_from_path(
-    share_name=config.get('afs_file_share_name'), 
-    directory_name=config.get('afs_script_directory'), 
-    file_name=config.get('local_script_file'), 
-    local_file_path=local_script_path
+  block_blob_service.create_blob_from_path(
+    container_name=config.get('azure_container_name'),
+    blob_name=os.path.join(
+      config.get('fs_script_directory'), 
+      config.get('local_script_file')
+    ),
+    file_path=local_script_path
   )
 
   # ===========================================
@@ -81,32 +78,15 @@ if __name__ == '__main__':
     )
   )
 
-  file_service.create_directory(
-    share_name=config.get('afs_file_share_name'),
-    directory_name=config.get('afs_model_directory'),
-    fail_on_exist=False
+  block_blob_service.create_blob_from_path(
+    container_name=config.get('azure_container_name'),
+    blob_name=os.path.join(
+      config.get('fs_model_directory'), 
+      config.get('local_model_file')
+    ),
+    file_path=local_model_path
   )
 
-  file_service.create_file_from_path(
-    share_name=config.get('afs_file_share_name'),
-    directory_name=config.get('afs_model_directory'),
-    file_name=config.get('local_model_file'),
-    local_file_path=local_model_path
-  )
-
-  # ====================================================
-  # # if model is a set of files in a dir, such as in TF:
-  # ====================================================
-  # 
-  # for file in os.listdir(local_model_path):
-  #   local_file_path = os.path.join(local_model_path, file)
-  #   if os.path.isfile(local_file_path):
-  #     file_service.create_file_from_path(
-  #       share_name=config.AFS_PATHS['azure_file_share_name'],
-  #       directory_name=os.path.join(config.AFS_PATHS['model_directory'], local_model_directory),
-  #       file_name=file,
-  #       local_file_path=local_file_path
-  #     )
 
   # ===========================================
   # TESTING ONLY
@@ -119,19 +99,14 @@ if __name__ == '__main__':
       '../data/pytorch_classification/cifar/test'
     )
 
-    file_service.create_directory(
-      share_name=config.get('afs_file_share_name'),
-      directory_name=config.get('afs_data_directory'),
-      fail_on_exist=False
-    )
-
     for file in os.listdir(local_data_dir_path):
-        local_data_file_path = os.path.join(local_data_dir_path, file)
-        if os.path.isfile(local_data_file_path):
-          file_service.create_file_from_path(
-            share_name=config.get('afs_file_share_name'),
-            directory_name=config.get('afs_data_directory'),
-            file_name=file,
-            local_file_path=local_data_file_path
-          )
+      local_data_file_path = os.path.join(local_data_dir_path, file)
+      if os.path.isfile(local_data_file_path):
+        block_blob_service.create_blob_from_path(
+          container_name=config.get('azure_container_name'),
+          blob_name=os.path.join(config.get('fs_data_directory'), file),
+          file_path=local_data_file_path
+        )
+
+
 

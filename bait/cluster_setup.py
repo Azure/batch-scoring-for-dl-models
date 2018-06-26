@@ -1,14 +1,15 @@
 import azure.mgmt.batchai.models as models
 from config import config
 import os
+from azure.common.credentials import ServicePrincipalCredentials
+import azure.mgmt.batchai as batchai
+import azure.mgmt.batchai.models as models
+from azure.mgmt.resource import ResourceManagementClient
+
 
 # =========================
 # Setup credentials
 # =========================
-from azure.common.credentials import ServicePrincipalCredentials
-import azure.mgmt.batchai as batchai
-import azure.mgmt.batchai.models as models
-
 creds = ServicePrincipalCredentials(
   client_id=config.get('aad_client_id'),
   secret=config.get('aad_secret'), 
@@ -22,8 +23,6 @@ batchai_client = batchai.BatchAIManagementClient(
 # =========================
 # Create Resource Group
 # =========================
-from azure.mgmt.resource import ResourceManagementClient
-
 resource_management_client = ResourceManagementClient(
   credentials=creds, 
   subscription_id=config.get('subscription_id')
@@ -46,17 +45,14 @@ _ = batchai_client.workspaces.create(
 # Create BAIT Cluster
 # =========================
 volumes = models.MountVolumes(
-  azure_file_shares=[
-    models.AzureFileShareReference(
+  azure_blob_file_systems=[
+    models.AzureBlobFileSystemReference(
       account_name=config.get('storage_account_name'),
       credentials=models.AzureStorageCredentialsInfo(
         account_key=config.get('storage_account_key')
       ),
-      azure_file_url='https://{0}.file.core.windows.net/{1}'.format(
-        config.get('storage_account_name'),
-        config.get('afs_file_share_name')
-      ),
-      relative_mount_path=config.get('cluster_fs_mnt_path')
+      container_name=config.get('azure_container_name'),
+      relative_mount_path=config.get('cluster_container_mnt_path')
     )
   ]
 )
