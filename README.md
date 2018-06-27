@@ -5,71 +5,62 @@ This tutorial demonstrates how to deploy a deep learning model to Azure for batc
 ### File System
 ```
 .
-├── bait/
-│   ├── cluster_setup.py
-│   ├── config.py
-│   ├── config_template.py
-│   ├── fileshare_setup.py
-│   ├── job_setup.py
+├── azure/
+│   ├── scripts/
+│   │   ├── util/
+│   │   │   ├── __init__.py
+│   │   │   ├── fileshare.py
+│   │   │   └── bai.py
+│   │   ├── create_cluster.py
+│   │   ├── create_job.py
+│   │   ├── upload_files.py
+│   │   └── delete_resources.py
+│   ├── docker_run.sh
+│   ├── Dockerfile
+│   └── requirements.txt
+│
 ├── scoring_script/
 │   ├── pytorch_classification/
 │   │   └── score0.py
 │   └── tf_mnist/
 │       └── score0.py
+│
 ├── training_script/
-|   ├── pytorch_classification/
-|   │   ├── train0.ipynb
-|   │   └── train0.py
-|   └── tf_mnist/
-|       ├── train0.ipynb
-|       └── train0.py
-
---- Files below this point will be generated in the tutorial
-
+│   ├── pytorch_classification/
+│   │   ├── train0.ipynb
+│   │   └── train0.py
+│   └── tf_mnist/
+│       ├── train0.ipynb
+│       └── train0.py
+│
+│-- Files below this point will be created --
 ├── data/
 │   └── pytorch_classification/
-├── model/
-│   ├── pytorch_classification/
-│   └── tf_mnist/
-└── func/
-    ├── blobtrig/
-    │   ├── function.json
-    │   ├── host.json
-    │   ├── __init__.py
-    │   ├── readme.md
-    │   └── sample.dat
-    ├── host.json
-    ├── local.settings.json
-    └── requirements.txt
+│
+└── model/
+    ├── pytorch_classification/
+    └── tf_mnist/
 ```
-There are a few main folders to take note of in this repository:
+## Requirements
 
-__/bait__
+TODO instructions on requirements to run the file (python version, etc...)
 
-This folder contains all the Batch AI scripts, including:
-- `cluster_setup.py` - executed locally
-- `fileshare_setup.py` - executed locally
-- `job_setup.py` - executed by Functions V2
+## Create your model file and data files
 
-It also contains a `config_template.py` file, which needs to be renamed as `config.py` and filled out.
+TODO instructions on creating `model/pytorch_classification/model0`, `data/pytorch_classification`...
 
+## Setup Azure Infrastructure
 
-__/func__
-
-This folder contains everything needed to run your functions v2. (TODO - maybe this should be made by the user?)
-
-__/models__
-
-This folder is where we store the model files that we will use for scoring.
-
-__/scoring_script__
-
-This folder contains the scoring script that will use a model in the /models directory. This scoring script will be executed on nodes in the Batch AI cluster.
-
-__/training_script__
-
-This folder contains the training scripts used to generate the models in the /models directory. This training script will be executed locally on a GPU enabled VM.
-
+1. Copy `template.env` to `.env` and fill out the configurations
+2. Run `source .env` to load the variables into the system environment
+3. Run `python azure/scripts/create_cluster.py`
+4. Run `python azure/scripts/upload_files.py --upload-data` check that the files are there (in the portal, or on Storage Explorer)
+5. Wait for your cluster to finish provisioning...
+6. Run `python azure/scripts/create_job.py` & check that the job is submitted (in the portal)
+7. Build the dockerfile (`sudo docker build -t bai_job .`) which will upload your azure utility python files as well as the `create_job.py` file to the docker image
+8. Run `source azure/docker_run.sh -t bai_job` to test that the job works - This script is essentially a wrapper around `docker run` that helps pass in the environment variables
+9. Publish the image to your dockerhub
+10. Setup logic app (TODO elaborate...)
 
 # Contributing
 
