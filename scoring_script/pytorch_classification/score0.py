@@ -108,39 +108,6 @@ def load_weights(net, model_path):
 
 if __name__ == '__main__':
 
-  # ###############################################
-  # # TODO remove in prod
-  # # Prints env vars to stdout
-  # # creates a new file `touch_test.txt` in the output_directory
-  # 
-  # result_output_path = os.environ.get('AZ_BATCHAI_OUTPUT_RESULT')
-  # input_scripts_path = os.environ.get('AZ_BATCHAI_INPUT_SCRIPTS')
-  # input_models_path = os.environ.get('AZ_BATCHAI_INPUT_MODELS')
-
-  # print("=============================")
-  # print("AZ_BATCHAI_OUTPUT_RESULT path:")
-  # print(result_output_path)
-  # print("AZ_BATCHAI_INPUT_SCRIPTS path:")
-  # print(os.listdir(input_scripts_path))
-  # print("AZ_BATCHAI_INPUT_MODELS path:")
-  # print(os.listdir(input_models_path))
-  # print("PYTHON Version:")
-  # print(platform.python_version())
-  # print("=============================")
-
-  # # create a file to rest that we can output to result_output_path
-  # if not os.path.exists(result_output_path):
-  #   pass
-  # else:
-  #   filename = 'touch_test.txt'
-  #   try:
-  #     f = open(os.path.join(result_output_path, filename), 'wb')
-  #     f.close()
-  #   except IOError:
-  #     print("Wrong path provided")
-  # ###############################################
-
-
   parser = argparse.ArgumentParser(description='Scoring script for Pytorch')
   parser.add_argument(
     '--model',
