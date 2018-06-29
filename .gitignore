@@ -7,7 +7,7 @@
 .env
 
 # do not commit venv folder
-py36
+pyenv
 
 # do not commit any data inside the training scripts
 training_script/*/data/
