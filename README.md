@@ -2,15 +2,24 @@
 
 This tutorial demonstrates how to deploy a deep learning model to Azure for batch scoring.
 
-## Requirements
+__Requirements__
 
-TODO instructions on requirements to run the file (python version, etc...)
+- Ubuntu 16.04 LTS (not tested on Mac or Windows)
+- >= Python 3.4
+- An Azure Subscription
 
-## Create your model file and data files
+## 1. Setup
+
+1. Clone the repo `git clone <repo-name>`
+2. `cd` into the repo
+3. Setup your virtual env `python -m venv <virtual-env-name>`
+4. Install packages `pip install -r requirements.txt`
+
+## 2. Create your model file and data files
 
 TODO instructions on creating `model/pytorch_classification/model0`, `data/pytorch_classification`...
 
-## Setup Azure Infrastructure
+## 3. Setup Azure Batch AI with a file share
 
 1. Copy `template.env` to `.env` and fill out the configurations
 2. Run `source .env` to load the variables into the system environment
@@ -18,51 +27,14 @@ TODO instructions on creating `model/pytorch_classification/model0`, `data/pytor
 4. Run `python azure/scripts/upload_files.py --upload-data` check that the files are there (in the portal, or on Storage Explorer)
 5. Wait for your cluster to finish provisioning...
 6. Run `python azure/scripts/create_job.py` & check that the job is submitted (in the portal)
-7. Build the dockerfile (`sudo docker build -t bai_job .`) which will upload your azure utility python files as well as the `create_job.py` file to the docker image
-8. Run `source azure/docker_run.sh -t bai_job` to test that the job works - This script is essentially a wrapper around `docker run` that helps pass in the environment variables
-9. Publish the image to your dockerhub
-10. Setup logic app (TODO elaborate...)
 
-## File System
-```
-.
-├── azure/
-│   ├── scripts/
-│   │   ├── util/
-│   │   │   ├── __init__.py
-│   │   │   ├── fileshare.py
-│   │   │   └── bai.py
-│   │   ├── create_cluster.py
-│   │   ├── create_job.py
-│   │   ├── upload_files.py
-│   │   └── delete_resources.py
-│   ├── docker_run.sh
-│   ├── Dockerfile
-│   └── requirements.txt
-│
-├── scoring_script/
-│   ├── pytorch_classification/
-│   │   └── score0.py
-│   └── tf_mnist/
-│       └── score0.py
-│
-├── training_script/
-│   ├── pytorch_classification/
-│   │   ├── train0.ipynb
-│   │   └── train0.py
-│   └── tf_mnist/
-│       ├── train0.ipynb
-│       └── train0.py
-│
-│-- Files below this point will be created --
-│
-├── data/
-│   └── pytorch_classification/
-│
-└── model/
-    ├── pytorch_classification/
-    └── tf_mnist/
-```
+## 4. Setup ACI to run BatchAI job
+1. Build the dockerfile (`sudo docker build -t bai_job .`) which will upload your azure utility python files as well as the `create_job.py` file to the docker image
+2. Run `source azure/docker_run.sh -t bai_job` to test that the job works - This script is essentially a wrapper around `docker run` that helps pass in the environment variables
+3. Publish the image to your dockerhub
+
+## 5. Setup ACI
+1. Setup logic app (TODO elaborate...)
 
 # Contributing
 
