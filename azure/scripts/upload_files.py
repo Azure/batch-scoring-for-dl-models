@@ -61,6 +61,6 @@ if __name__ == '__main__':
     fs.create_blobs_in_dir(
       blob_service=blob_service,
       blob_dir_name=os.getenv('FS_DATA_DIRECTORY'),
-      local_dir_path='../../../data/pytorch_classification/cifar/test'
+      local_dir_path='../../../pytorch_image_classification/data/cifar/test'
     )
 
