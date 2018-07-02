@@ -21,26 +21,9 @@ __Requirements__
 
 1. Copy __template.env__ to __.env__ and fill out the configurations and credentials in __.env__
 2. Run `source .env` to load all the configurations as environment variables
-3. Run `jupyter notebook` in the root directory
+3. Run `jupyter notebook` in the root directory and run through [pytorch_image_classification.ipynb](./pytorch_image_classification).
 
 The Jupyter notebook will take you through setting up Azure BatchAI with a file share, ACI, and Logic Apps. The notebook will also show your how to setup your training and scoring script to test locally.
-
-## 3. Setup Azure Batch AI with a file share
-
-1. Copy `template.env` to `.env` and fill out the configurations
-2. Run `source .env` to load the variables into the system environment
-3. Run `python azure/scripts/create_cluster.py`
-4. Run `python azure/scripts/upload_files.py --upload-data` check that the files are there (in the portal, or on Storage Explorer)
-5. Wait for your cluster to finish provisioning...
-6. Run `python azure/scripts/create_job.py` & check that the job is submitted (in the portal)
-
-## 4. Setup ACI to run BatchAI job
-1. Build the dockerfile (`sudo docker build -t bai_job .`) which will upload your azure utility python files as well as the `create_job.py` file to the docker image
-2. Run `source azure/docker_run.sh -t bai_job` to test that the job works - This script is essentially a wrapper around `docker run` that helps pass in the environment variables
-3. Publish the image to your dockerhub
-
-## 5. Setup ACI
-1. Setup logic app (TODO elaborate...)
 
 # Contributing
 
