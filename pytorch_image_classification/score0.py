@@ -57,12 +57,12 @@ class CifarDataset(torch.utils.data.Dataset):
 
   def __getitem__(self, idx):
     img_name = self.files[idx]
-    image = io.imread(os.path.join(self.root_dir, img_name))
+    img = io.imread(os.path.join(self.root_dir, img_name))
 
     if self.transform:
-      image = self.transform(image)
+      img = self.transform(img)
 
-    return image
+    return img, img_name
 
 
 # ============================================= #
@@ -112,12 +112,12 @@ if __name__ == '__main__':
   parser.add_argument(
     '--model',
     help='The path where your model weights are saved',
-    default='../../model/pytorch_classification/model0'
+    default='model0'
   )
   parser.add_argument(
     '--data',
     help='The path where the data your want to score are located',
-    default='../../data/pytorch_classification/cifar/test/'
+    default='data/cifar/test/'
   )
   parser.add_argument(
     '--output',
@@ -140,20 +140,35 @@ if __name__ == '__main__':
   )
 
   # create data loader from dataset
-  dataloader = DataLoader(cifar_dataset, batch_size=4, shuffle=True, num_workers=4)
+  dataloader = DataLoader(cifar_dataset, batch_size=1, shuffle=True, num_workers=4)
 
   # define classes to map predictions to 
-  classes = ('plane', 'car', 'bird', 'cat',
-             'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+  label_map = {
+    'dog': 0,
+    'bird': 1, 
+    'airplane': 2,
+    'horse': 3,
+    'frog': 4,
+    'automobile': 5,
+    'cat': 6,
+    'deer': 7,
+    'truck': 8, 
+    'ship': 9
+  }
+
+  def get_category(i):
+    for k, v in label_map.items():
+      if v == i:
+        return k
 
   # score!
   with torch.no_grad():
     time = datetime.utcnow().strftime("%m_%d_%Y_%H%M%S")
     with open(os.path.join(output_path, 'scores_{0}'.format(time)), "w") as file:
-      for img in dataloader:
+      for img, img_name in dataloader:
 
         # enforce shape (img in batch, channels, height, width)
-        img = img.view([4, 3, 32, 32])
+        img = img.view([1, 3, 32, 32])
 
         # cast tensor to float
         img = img.float()
@@ -162,7 +177,7 @@ if __name__ == '__main__':
         _, predicted = torch.max(outputs.data, 1)
 
         # write to output
-        file.write(' '.join('%5s' % classes[predicted[j]] for j in range(4)))
+        file.write('Predictd: %10s | Filename: %25s' % (get_category(predicted[0]), img_name))
         file.write('\n')
 
 
