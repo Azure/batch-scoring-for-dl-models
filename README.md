@@ -5,7 +5,7 @@ This tutorial demonstrates how to deploy a deep learning model to Azure for batc
 __Requirements__
 
 - Ubuntu 16.04 LTS (not tested on Mac or Windows)
-- >= Python 3.4
+- Python 3.4 or greater
 - An Azure Subscription
 
 ## 1. Setup
@@ -15,8 +15,16 @@ __Requirements__
 3. Setup your virtual env `python -m venv <virtual-env-name>`
 4. Install packages `pip install -r requirements.txt`
 
-## 2. Create your model file and data files
+## 2. Create your test dataset
 
+1. `cd` into the pytorch_image_classification folder
+2. Create a data folder `mkdir data && cd data`
+2. Download CIFAR image dataset `wget http://pjreddie.com/media/files/cifar.tgz`
+3. Unfar `tar xzf cifar.tgz`
+
+## 3. Create your model file and test your scoring script locally
+
+1. 
 TODO instructions on creating `model/pytorch_classification/model0`, `data/pytorch_classification`...
 
 ## 3. Setup Azure Batch AI with a file share
