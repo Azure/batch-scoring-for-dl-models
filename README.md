@@ -21,7 +21,7 @@ __Requirements__
 
 1. Copy __template.env__ to __.env__ and fill out the configurations and credentials in __.env__
 2. Run `source .env` to load all the configurations as environment variables
-3. Run `jupyter notebook` in the root directory and run through [pytorch_image_classification.ipynb](./pytorch_image_classification).
+3. Run `jupyter notebook` in the root directory and run through [pytorch_image_classification.ipynb](./pytorch_image_classification.ipynb).
 
 The Jupyter notebook will take you through setting up Azure BatchAI with a file share, ACI, and Logic Apps. The notebook will also show your how to setup your training and scoring script to test locally.
 
