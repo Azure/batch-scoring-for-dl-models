@@ -7,6 +7,8 @@ __Requirements__
 - Ubuntu 16.04 LTS (not tested on Mac or Windows)
 - Python 3.4 or greater
 - An Azure Subscription
+- Docker 1.0 or greater
+- A Dockerhub account
 
 ## 1. Setup
 
@@ -15,17 +17,13 @@ __Requirements__
 3. Setup your virtual env `python -m venv <virtual-env-name>`
 4. Install packages `pip install -r requirements.txt`
 
-## 2. Create your test dataset
+## 2. Set up environment variables & start the Jupyter Notebook
 
-1. `cd` into the pytorch_image_classification folder
-2. Create a data folder `mkdir data && cd data`
-2. Download CIFAR image dataset `wget http://pjreddie.com/media/files/cifar.tgz`
-3. Unfar `tar xzf cifar.tgz`
+1. Copy __template.env__ to __.env__ and fill out the configurations and credentials in __.env__
+2. Run `source .env` to load all the configurations as environment variables
+3. Run `jupyter notebook` in the root directory
 
-## 3. Create your model file and test your scoring script locally
-
-1. 
-TODO instructions on creating `model/pytorch_classification/model0`, `data/pytorch_classification`...
+The Jupyter notebook will take you through setting up Azure BatchAI with a file share, ACI, and Logic Apps. The notebook will also show your how to setup your training and scoring script to test locally.
 
 ## 3. Setup Azure Batch AI with a file share
 
