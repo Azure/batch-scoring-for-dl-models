@@ -5,6 +5,8 @@ import torchvision
 from datetime import datetime
 from skimage import io, transform
 from torch.utils.data import DataLoader
+import warnings
+warnings.filterwarnings('ignore')
 
 import argparse
 import os
