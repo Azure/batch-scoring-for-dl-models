@@ -3,6 +3,12 @@
 *.ipynb_checkpoints
 *__pycache__
 
+# dont commit images or videos
+*.jpg
+*.png
+*.mov
+*.mp4
+
 # never commit config (as it contains secrets)
 .env
 
