@@ -3,6 +3,19 @@ from azure.storage.blob import BlockBlobService
 import os
 
 
+def list_blobs_in_dir(
+    blob_service: 'BlockBlobService',
+    blob_dir_name: str,
+    container_name: str = os.getenv('AZURE_CONTAINER_NAME')
+  ) -> 'BlobBlockList':
+  '''
+  TODO
+  '''
+  blob_list = blob_service.list_blobs(container_name, blob_dir_name)
+  blobs = [blob.name.split('/')[1] for blob in blob_list]
+  return blobs
+
+
 def setup_file_share(
     container_name: str = os.getenv('AZURE_CONTAINER_NAME')
   ) -> 'BlockBlobService':
@@ -28,6 +41,35 @@ def setup_file_share(
   ) 
 
   return blob_service
+
+
+def create_dir(
+    blob_service: 'BlockBlobService', 
+    blob_dir_name: str, 
+    container_name: str = os.getenv('AZURE_CONTAINER_NAME')
+  ) -> None:
+  '''
+  Create directory in storage container
+  This is done by adding an empty tmp file to the directory
+
+  Args:
+    blob_service (BlockBlobService): Instance of the Block
+      Blob Service to use.
+    blob_dir_name (str): Name of the directory to create 
+      in the storage container.
+    container_name (str, optional): Name of container, will
+      default to using environment variable if param is not
+      provided.
+
+  Returns:
+    None
+
+  '''
+  blob_service.create_blob_from_bytes(
+    container_name=container_name,
+    blob_name=os.path.join(blob_dir_name, '.tmp'),
+    blob=bytes(0)
+  )
 
 
 def create_blob_in_dir(
