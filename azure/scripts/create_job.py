@@ -6,6 +6,8 @@ import os
 
 if __name__ == '__main__':
 
+  now = datetime.utcnow()
+
   # set up batch AI client with credentials
   bai_client = bai.setup_bai()
   fs_client = fileshare.setup_file_share()
@@ -14,18 +16,19 @@ if __name__ == '__main__':
   cluster = bai.get_cluster(bai_client, os.getenv('CLUSTER_NAME'))
 
   # create an experiment 
-  experiment_name = datetime.utcnow().strftime(
+  experiment_name = now.strftime(
     "{0}_%m_%d_%Y_%H%M%S".format(os.getenv('EXPERIMENT_PREFIX'))
   )
   experiment = bai.create_experiment(bai_client, experiment_name)
 
-  # create output dir
-  output_dir = datetime.utcnow().strftime(
+  # create name output dir
+  output_dir = now.strftime(
     "{0}_%m_%d_%Y_%H%M%S".format(
       os.getenv('FS_OUTPUT_IMG_DIRECTORY_PREFIX')
     )
   )
 
+  # create output dir in storage
   fileshare.create_dir(
     blob_service=fs_client,
     blob_dir_name=output_dir

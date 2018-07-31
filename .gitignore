@@ -8,6 +8,10 @@
 *.png
 *.mov
 *.mp4
+!sample*.jpg
+!sample*.png
+!sample*.mov
+!sample*.mp4
 
 # never commit config (as it contains secrets)
 .env
