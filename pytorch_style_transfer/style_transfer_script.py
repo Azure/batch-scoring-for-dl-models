@@ -30,7 +30,6 @@ class ContentDataset(torch.utils.data.Dataset):
         applied on a sample
     '''
     self.root_dir = root_dir
-    # files = os.listdir(root_dir) if files is None else files
 
     self.files = [f for f in (os.listdir(root_dir) if files is None else files) \
                   if os.path.isfile(os.path.join(root_dir, f))]
@@ -45,7 +44,7 @@ class ContentDataset(torch.utils.data.Dataset):
     img = Image.open(os.path.join(self.root_dir, img_name))
 
     if self.transform:
-        img = self.transform(img)
+      img = self.transform(img)
 
     return img, img_name
 
@@ -65,7 +64,8 @@ class StyleLoss(nn.Module):
     return input
   
   def _gram_matrix(self, input):
-    a, b, c, d = input.size()  # a=batch size(=1)
+    a, b, c, d = input.size()  
+    # a=batch size(=1)
     # b=number of feature maps
     # (c,d)=dimensions of a f. map (N=c*d)
 
@@ -96,6 +96,7 @@ class ContentLoss(nn.Module):
 # create a module to normalize input image so we can easily put it in a
 # nn.Sequential
 class Normalization(nn.Module):
+
   def __init__(self, mean, std):
     super(Normalization, self).__init__()
     # .view the mean and std to make them [C x 1 x 1] so that they can
