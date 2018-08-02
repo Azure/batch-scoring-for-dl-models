@@ -256,7 +256,7 @@ if __name__ == '__main__':
     '--style-image',
     dest='style_image',
     help='The path of the style image',
-    default='images/style_images/vangogh2.jpg'
+    default='images/style_images/sample_vangogh.jpg'
   )
   parser.add_argument(
     '--content-image-dir',
@@ -314,6 +314,8 @@ if __name__ == '__main__':
   assert os.path.isdir(content_image_dir)
   assert os.path.isdir(output_image_dir)
   for image_file in content_image_list:
+    print("content_image_dir: {}".format(content_image_dir))
+    print("image_file: {}".format(image_file))
     assert os.path.exists(os.path.join(content_image_dir, image_file))
   
   # Setup image transformations
