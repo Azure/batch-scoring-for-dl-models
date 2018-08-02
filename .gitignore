@@ -8,6 +8,8 @@
 *.png
 *.mov
 *.mp4
+*.aac
+*.avi
 !sample*.jpg
 !sample*.png
 !sample*.mov
