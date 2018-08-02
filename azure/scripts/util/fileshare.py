@@ -77,6 +77,7 @@ def create_blob_in_dir(
     blob_dir_name: str, 
     local_file_path: str, 
     local_file_name: str, 
+    blob_file_name: str,
     container_name: str = os.getenv('AZURE_CONTAINER_NAME')
   ) -> None:
   '''
@@ -92,6 +93,7 @@ def create_blob_in_dir(
       location of this script.
     local_file_name (str): Name of the file you want to
       upload.
+    blob_file_name (str): Name of the blob.
     container_name (str, optional): Name of container, will
       default to using environment variable if param is not
       provided.
@@ -107,7 +109,7 @@ def create_blob_in_dir(
 
   blob_service.create_blob_from_path(
     container_name=container_name,
-    blob_name=os.path.join(blob_dir_name, local_file_name),
+    blob_name=os.path.join(blob_dir_name, blob_file_name),
     file_path=file_path
   )
 

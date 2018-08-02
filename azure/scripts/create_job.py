@@ -2,10 +2,32 @@ import azure.mgmt.batchai as batchai
 from datetime import datetime
 from util import bai, fileshare
 from iteration_utilities import grouper
+import argparse
 import os
 
 if __name__ == '__main__':
 
+  # set up parser
+  parser = argparse.ArgumentParser( \
+    description='Script for creating a set of BatchAI jobs.')
+  parser.add_argument(
+    '--content-images-blob-dir', 
+    dest='content_images_blob_dir', 
+    help='The name of the content images directory in blob.',
+    default=os.getenv('FS_CONTENT_DIR')
+  )
+  parser.add_argument(
+    '--job-batch-size',
+    dest='job_batch_size',
+    help='The number of images to process for BatchAI job.',
+    default=os.getenv('JOB_BATCH_SIZE')
+  )
+
+  args = parser.parse_args()
+  content_images_blob_dir = args.content_images_blob_dir
+  job_batch_size = args.job_batch_size
+
+  # set date to be used by experiment name and output dirname
   now = datetime.utcnow()
 
   # set up batch AI client with credentials
@@ -22,24 +44,23 @@ if __name__ == '__main__':
   experiment = bai.create_experiment(bai_client, experiment_name)
 
   # create name output dir
-  output_dir = now.strftime(
+  output_images_dir = now.strftime(
     "{0}_%m_%d_%Y_%H%M%S".format(
-      os.getenv('FS_OUTPUT_IMG_DIRECTORY_PREFIX')
+      os.getenv('FS_OUTPUT_DIR_PREFIX')
     )
   )
 
   # create output dir in storage
   fileshare.create_dir(
     blob_service=fs_client,
-    blob_dir_name=output_dir
+    blob_dir_name=output_images_dir
   )
 
   # set up directories to access for the jobs
   mapping = [
-    ('SCRIPT', os.getenv('FS_SCRIPT_DIRECTORY')),
-    ('STYLE', os.getenv('FS_STYLE_IMG_DIRECTORY')),
-    ('CONTENT', os.getenv('FS_CONTENT_IMG_DIRECTORY')),
-    ('OUTPUT', output_dir)
+    ('FILES', os.getenv('FS_INPUT_DIR')),
+    ('CONTENT_IMGS', content_images_blob_dir),
+    ('OUTPUT_IMGS', output_images_dir)
   ]
     
   input_dirs = []
@@ -57,14 +78,14 @@ if __name__ == '__main__':
   # create array of content img names inside content img dir
   content_img_names = fileshare.list_blobs_in_dir(
     blob_service=fs_client, 
-    blob_dir_name=os.getenv('FS_CONTENT_IMG_DIRECTORY')
+    blob_dir_name=content_images_blob_dir
   )
 
   # create a job per chunk
   for group_i, img_name_group in \
       enumerate(grouper(
         content_img_names, 
-        int(os.getenv('JOB_BATCH_SIZE'))
+        int(job_batch_size)
       )):
         
     img_list_str = ','.join(img_name_group)
@@ -83,13 +104,13 @@ if __name__ == '__main__':
       input_dirs=input_dirs,
       output_dirs=None,
       container_image="pytorch/pytorch:0.4_cuda9_cudnn7",
-      command_line=("python $AZ_BATCHAI_INPUT_SCRIPT/{0} " + \
-        "--style-image $AZ_BATCHAI_INPUT_STYLE/{1} " + \
-        "--content-image-dir $AZ_BATCHAI_INPUT_CONTENT " + \
+      command_line=("python $AZ_BATCHAI_INPUT_FILES/{0} " + \
+        "--style-image $AZ_BATCHAI_INPUT_FILES/{1} " + \
+        "--content-image-dir $AZ_BATCHAI_INPUT_CONTENT_IMGS " + \
         "--content-image-list {2} " \
-        "--output-image-dir $AZ_BATCHAI_INPUT_OUTPUT").format(
-          os.getenv('LOCAL_SCRIPT_FILE'),
-          os.getenv('LOCAL_STYLE_IMG_FILE'),
+        "--output-image-dir $AZ_BATCHAI_INPUT_OUTPUT_IMGS").format(
+          os.getenv('FS_SCRIPT_NAME'),
+          os.getenv('FS_STYLE_IMG_NAME'),
           img_list_str
         ),
       job_prep_command_line="pip install scikit-image"
