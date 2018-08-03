@@ -4,11 +4,15 @@ This tutorial demonstrates how to deploy a deep learning model to Azure for batc
 
 __Requirements__
 
+Local/Working Machine:
 - Ubuntu 16.04 LTS (not tested on Mac or Windows)
 - Python 3.4 or greater
-- An Azure Subscription
 - Docker 1.0 or greater
+- Ideally GPU enabled for local testing
+
+Accounts:
 - A Dockerhub account
+- Azure Subscription quota for GPU-enabled VMs (ideally the V100s)
 
 ## 1. Setup
 
