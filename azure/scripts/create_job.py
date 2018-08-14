@@ -4,6 +4,10 @@ from util import bai, fileshare
 from iteration_utilities import grouper
 import argparse
 import os
+import time
+import logging
+from logging.handlers import RotatingFileHandler
+import sys
 
 if __name__ == '__main__':
 
@@ -22,12 +26,41 @@ if __name__ == '__main__':
     help='The number of images to process for BatchAI job.',
     default=os.getenv('JOB_BATCH_SIZE')
   )
+  parser.add_argument(
+    '--log-path',
+    dest='log_path',
+    help='The path of the log file to create.',
+    default=None
+  )
 
   args = parser.parse_args()
   content_images_blob_dir = args.content_images_blob_dir
   job_batch_size = args.job_batch_size
+  log_path = args.log_path
 
-  # set date to be used by experiment name and output dirname
+  # set up logger
+  handler_format = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  )
+
+  logger = logging.getLogger(__name__)
+  logger.setLevel(logging.DEBUG)
+
+  console_handler = logging.StreamHandler(sys.stdout)
+  console_handler.setFormatter(handler_format)
+  logger.addHandler(console_handler)
+
+  if log_path is not None:
+    file_handler = RotatingFileHandler(
+      os.path.join(log_path, 'create_job.log'), 
+      maxBytes=20000
+    )
+    file_handler.setFormatter(handler_format)
+    logger.addHandler(file_handler)
+
+  logger.propagate = False
+
+  # set date to be used by experiment name, output/logging dirname
   now = datetime.utcnow()
 
   # set up batch AI client with credentials
@@ -45,22 +78,38 @@ if __name__ == '__main__':
 
   # create name output dir
   output_images_dir = now.strftime(
-    "{0}_%m_%d_%Y_%H%M%S".format(
-      os.getenv('FS_OUTPUT_DIR_PREFIX')
+    "{0}_{1}_%m_%d_%Y_%H%M%S".format(
+      os.getenv('FS_OUTPUT_DIR_PREFIX'),
+      content_images_blob_dir
     )
   )
 
-  # create output dir in storage
+  # create name of log dir
+  logger_dir = now.strftime(
+    "{0}_{1}_%m_%d_%Y_%H%M%S".format(
+      os.getenv('FS_LOGGER_DIR_PREFIX'),
+      content_images_blob_dir
+    )
+  )
+
+  # create mounted output images dir in storage
   fileshare.create_dir(
     blob_service=fs_client,
     blob_dir_name=output_images_dir
   )
 
-  # set up directories to access for the jobs
+  # create mounted logging dir in storage
+  fileshare.create_dir(
+    blob_service=fs_client,
+    blob_dir_name=logger_dir
+  )
+
+  # set up input directories to access for the jobs
   mapping = [
     ('FILES', os.getenv('FS_INPUT_DIR')),
     ('CONTENT_IMGS', content_images_blob_dir),
-    ('OUTPUT_IMGS', output_images_dir)
+    ('OUTPUT_IMGS', output_images_dir),
+    ('LOGGER', logger_dir)
   ]
     
   input_dirs = []
@@ -82,6 +131,7 @@ if __name__ == '__main__':
   )
 
   # create a job per chunk
+  t0 = time.time()
   for group_i, img_name_group in \
       enumerate(grouper(
         content_img_names, 
@@ -108,10 +158,13 @@ if __name__ == '__main__':
         "--style-image $AZ_BATCHAI_INPUT_FILES/{1} " + \
         "--content-image-dir $AZ_BATCHAI_INPUT_CONTENT_IMGS " + \
         "--content-image-list {2} " \
-        "--output-image-dir $AZ_BATCHAI_INPUT_OUTPUT_IMGS").format(
+        "--output-image-dir $AZ_BATCHAI_INPUT_OUTPUT_IMGS " + \
+        "--log-path $AZ_BATCHAI_INPUT_LOGGER " + \
+        "--log-file {3}").format(
           os.getenv('FS_SCRIPT_NAME'),
           os.getenv('FS_STYLE_IMG_NAME'),
-          img_list_str
+          img_list_str,
+          job_name # use job_name as log_file name too
         ),
       job_prep_command_line="pip install scikit-image"
     )
@@ -124,5 +177,20 @@ if __name__ == '__main__':
       experiment_name
     )
 
-    print('Created Job: {}'.format(job.name))
+    logger.debug("Created job #{}, named {}, with {} images." \
+      .format(group_i, job.name, len(img_name_group))
+    )
+
+  # log total time to create jobs
+  t1 = time.time()
+  create_jobs_time = t1 - t0
+  logger.debug(
+    "Time (in seconds) it took to create all BatchAI jobs: {}" \
+    .format(create_jobs_time)
+  )
+  logger.debug(
+    "Time (in seconds) it takes to create a single BatchAI job " + \
+    "on average: {}".format(create_jobs_time/group_i)
+  )
+
 

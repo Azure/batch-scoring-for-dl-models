@@ -81,6 +81,7 @@ def create_blob_in_dir(
     container_name: str = os.getenv('AZURE_CONTAINER_NAME')
   ) -> None:
   '''
+  TODO: Remove
   Create directory in storage container & add a blob to it.
 
   Args:
@@ -121,6 +122,7 @@ def create_blobs_in_dir(
     container_name: str = os.getenv('AZURE_CONTAINER_NAME')
   ) -> None:
   '''
+  TODO: remove
   Create directory in storage container & add multiple 
     blobs to it.
 
