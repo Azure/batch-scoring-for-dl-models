@@ -4,11 +4,15 @@ This tutorial demonstrates how to deploy a deep learning model to Azure for batc
 
 __Requirements__
 
+Local/Working Machine:
 - Ubuntu 16.04 LTS (not tested on Mac or Windows)
 - Python 3.4 or greater
-- An Azure Subscription
 - Docker 1.0 or greater
+- Ideally GPU enabled for local testing
+
+Accounts:
 - A Dockerhub account
+- Azure Subscription quota for GPU-enabled VMs (ideally the V100s)
 
 ## 1. Setup
 
@@ -21,7 +25,7 @@ __Requirements__
 
 1. Copy __template.env__ to __.env__ and fill out the configurations and credentials in __.env__
 2. Run `source .env` to load all the configurations as environment variables
-3. Run `jupyter notebook` in the root directory and run through [pytorch_image_classification.ipynb](./pytorch_image_classification.ipynb).
+3. Run `jupyter notebook` in the root directory and run through [style_transfer.ipynb](./style_transfer.ipynb).
 
 The Jupyter notebook will take you through setting up Azure BatchAI with a file share, ACI, and Logic Apps. The notebook will also show your how to setup your training and scoring script to test locally.
 
