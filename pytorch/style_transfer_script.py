@@ -11,6 +11,10 @@ from torch.utils.data import DataLoader
 import copy
 import argparse
 import os
+import time
+import logging
+from logging.handlers import RotatingFileHandler
+import sys
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -195,13 +199,12 @@ def run_style_transfer(cnn, normalization_mean, normalization_std,
       location specified in the parameter. If the parameter is set to
       False, then no intermediate results will be saved to disk.
   """
+  logger = logging.getLogger('root')
   
-  print('Building the style transfer model..')
   model, style_losses, content_losses = get_style_model_and_losses(cnn,
       normalization_mean, normalization_std, style_img, content_img)
   optimizer = get_input_optimizer(input_img)
   
-  print('Optimizing..')
   run = [0]
   while run[0] <= num_steps:
 
@@ -227,8 +230,8 @@ def run_style_transfer(cnn, normalization_mean, normalization_std,
 
       run[0] += 1
       if run[0] % 50 == 0:
-        print('run #{} - Style Loss : {:4f} Content Loss: {:4f}'.format(
-          run, style_score.item(), content_score.item()))
+        logger.debug('run #{:_>4} - Style Loss : {:4f} Content Loss: {:4f}'.format(
+          run[0], style_score.item(), content_score.item()))
         
         # save tmp folder
         if tmp_dir:
@@ -268,7 +271,7 @@ if __name__ == '__main__':
     '--content-image-list',
     dest='content_image_list',
     help='A comma separated list of images to use in the content_image_dir',
-    default=''
+    default=None
   )
   parser.add_argument(
     '--output-image-dir',
@@ -297,15 +300,29 @@ if __name__ == '__main__':
     help='The number of steps to use when optimizing the style transfer loss function.',
     default=300
   )
+  parser.add_argument(
+    '--log-path',
+    dest='log_path',
+    help='The path of the log file to create.',
+    default='.'
+  )
+  parser.add_argument(
+    '--log-file',
+    dest='log_file',
+    help='The name of the file to log to.',
+    default=None
+  )
   args = parser.parse_args()
 
   style_image = args.style_image
   content_image_dir = args.content_image_dir
-  content_image_list = args.content_image_list.split(',')
+  content_image_list = args.content_image_list
   output_image_dir = args.output_image_dir
   style_weight = args.style_weight
   content_weight = args.content_weight
   num_steps = args.num_steps
+  log_path = args.log_path
+  log_file = args.log_file
 
   # check that all the paths and image references are good
   assert os.path.exists(style_image)
@@ -313,14 +330,41 @@ if __name__ == '__main__':
   assert os.path.exists(output_image_dir)
   assert os.path.isdir(content_image_dir)
   assert os.path.isdir(output_image_dir)
-  for image_file in content_image_list:
-    print("content_image_dir: {}".format(content_image_dir))
-    print("image_file: {}".format(image_file))
-    assert os.path.exists(os.path.join(content_image_dir, image_file))
+  if content_image_list is not None:
+    for image_file in content_image_list.split(','):
+      assert os.path.exists(os.path.join(content_image_dir, image_file))
+  assert os.path.isdir(log_path)
   
+  # set up logger
+  handler_format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+  console_handler = logging.StreamHandler(sys.stdout)
+  console_handler.setFormatter(handler_format)
+  file_handler = RotatingFileHandler(
+    os.path.join(
+      log_path, 
+      '{}.log'.format(log_file) if log_file else 'style_transfer_script.log'
+    ), 
+    maxBytes=20000
+  )
+  file_handler.setFormatter(handler_format)
+
+  logger = logging.getLogger(__name__)
+  logger.setLevel(logging.DEBUG)
+  logger.addHandler(console_handler)
+  logger.addHandler(file_handler)
+  logger.propagate = False
+
+  # log script paramters
+  num_images = len(content_image_list.split(',')) \
+    if content_image_list is not None \
+    else len(os.listdir(content_image_dir))
+  logger.debug("Images to process: %i" % num_images)
+
   # Setup image transformations
   imsize = 512 if torch.cuda.is_available() else 128  # use small size if no gpu
+  logger.debug("GPU detected: %s, image size: %s" % (str(torch.cuda.is_available()), imsize))
 
+  # setup loader
   loader = transforms.Compose([
     transforms.Resize(imsize),  # scale imported image
     transforms.CenterCrop(imsize), # crop on center
@@ -334,10 +378,18 @@ if __name__ == '__main__':
   content_img_loader = DataLoader(content_img_set, batch_size=1, shuffle=False, num_workers=1)
 
   # Load style image
+  t0 = time.time()
   style_img = loader(Image.open(style_image)).unsqueeze(0).to(device, torch.float)
+  t1 = time.time()
+  style_img_time = t1 - t0
+  logger.debug("Time (in seconds) to load style image: %f" % style_img_time)
 
   # load vgg19
+  t0 = time.time()
   cnn = models.vgg19(pretrained=True).features.to(device).eval()
+  t1 = time.time()
+  load_cnn_time = t1 - t0
+  logger.debug("Time (in seconds) to load VGG19 model: %f" % load_cnn_time)
 
   # VGG networks are trained on images with each channel 
   # normalized by mean=[0.485, 0.456, 0.406] and std=[0.229, 0.224, 0.225]. 
@@ -349,6 +401,8 @@ if __name__ == '__main__':
   content_imgs = []
 
   # run style transfer on each content image
+  t0 = time.time()
+  
   for content_img_batch, content_filename_batch in content_img_loader:
 
     # load image and add image to content image array
@@ -362,6 +416,7 @@ if __name__ == '__main__':
     input_img = content_img.clone()
 
     # style transfer!
+    logger.debug("Running Style Transfer on %s" % content_filename)
     output = run_style_transfer(cnn, cnn_normalization_mean, cnn_normalization_std,
                                 content_img, style_img, input_img, num_steps=num_steps,
                                 style_weight=style_weight, content_weight=content_weight)
@@ -370,4 +425,14 @@ if __name__ == '__main__':
     output_imgs.append(output)
 
     # save output image
-    util.save_image(output, os.path.join(output_image_dir, '{0}.jpg'.format(content_filename.split('.')[0])))
+    util.save_image(output, os.path.join(
+      output_image_dir, '{0}.jpg'.format(content_filename.split('.')[0])
+    ))
+
+  # log total time to run jobs
+  t1 = time.time()
+  style_transfer_time = t1 - t0
+  logger.debug("Time (in seconds) to apply style-transfer to batch of %i images: %f" \
+    % (num_images, style_transfer_time))
+  logger.debug("Average Time (in seconds) to apply style-transfer to each image: %f" \
+    % (style_transfer_time / num_images))
