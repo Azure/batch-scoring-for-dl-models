@@ -10,23 +10,23 @@
             "defaultValue": "azureblob",
             "type": "String"
         },
-        "workflows_{{ env['LOGIC_APP'] }}_name": {
-            "defaultValue": "{{ env['LOGIC_APP'] }}",
+        "workflows_js_logic_app_name": {
+            "defaultValue": "js_logic_app",
             "type": "String"
         },
-        "workflows_{{ env['RESOURCE_GROUP'] }}_path": {
-            "defaultValue": "/subscriptions/@{encodeURIComponent('{{ env['SUBSCRIPTION_ID'] }}')}/resourceGroups/@{encodeURIComponent('{{ env['RESOURCE_GROUP'] }}')}/providers/Microsoft.ContainerInstance/containerGroups/@{encodeURIComponent('{{ env['ACI_CONTAINER_GROUP'] }}')}",
+        "workflows_jsbatchai_path": {
+            "defaultValue": "/subscriptions/@{encodeURIComponent('0ca618d2-22a8-413a-96d0-0f1b531129c3')}/resourceGroups/@{encodeURIComponent('jsbatchai')}/providers/Microsoft.ContainerInstance/containerGroups/@{encodeURIComponent('js_aci_group')}",
             "type": "String"
         }
     },
     "variables": {},
     "resources": [
         {
-            "comments": "Generalized from resource: '/subscriptions/{{ env['SUBSCRIPTION_ID'] }}/resourceGroups/{{ env['RESOURCE_GROUP'] }}/providers/Microsoft.Logic/workflows/{{ env['LOGIC_APP'] }}'.",
+            "comments": "Generalized from resource: '/subscriptions/0ca618d2-22a8-413a-96d0-0f1b531129c3/resourceGroups/jsbatchai/providers/Microsoft.Logic/workflows/js_logic_app'.",
             "type": "Microsoft.Logic/workflows",
-            "name": "[parameters('workflows_{{ env['LOGIC_APP'] }}_name')]",
+            "name": "[parameters('workflows_js_logic_app_name')]",
             "apiVersion": "2017-07-01",
-            "location": "{{ env['REGION'] }}",
+            "location": "eastus",
             "tags": {},
             "scale": null,
             "properties": {
@@ -48,8 +48,8 @@
                             },
                             "splitOn": "@triggerBody()",
                             "metadata": {
-                                "JTJmYmF0Y2hhaQ==": "/{{ env['AZURE_CONTAINER_NAME'] }}",
-                                "JTJmYmF0Y2hhaSUyZmRhdGEtbG9naWMtYXBwLTMlMmY=": "/{{ env['AZURE_CONTAINER_NAME'] }}/data-logic-app-3/"
+                                "JTJmYmF0Y2hhaQ==": "/batchai",
+                                "JTJmYmF0Y2hhaSUyZmRhdGEtbG9naWMtYXBwLTMlMmY=": "/batchai/data-logic-app-3/"
                             },
                             "type": "ApiConnection",
                             "inputs": {
@@ -88,59 +88,59 @@
                                                             "environmentVariables": [
                                                                 {
                                                                     "name": "AAD_CLIENT_ID",
-                                                                    "value": "{{ env['AAD_CLIENT_ID'] }}"
+                                                                    "value": "fd5d0801-ba2e-47c0-8781-245c2ba7117d"
                                                                 },
                                                                 {
                                                                     "name": "AAD_SECRET",
-                                                                    "value": "{{ env['AAD_SECRET'] }}"
+                                                                    "value": "pass123!"
                                                                 },
                                                                 {
                                                                     "name": "AAD_TENANT",
-                                                                    "value": "{{ env['AAD_TENANT'] }}"
+                                                                    "value": "72f988bf-86f1-41af-91ab-2d7cd011db47"
                                                                 },
                                                                 {
                                                                     "name": "STORAGE_ACCOUNT_NAME",
-                                                                    "value": "{{ env['STORAGE_ACCOUNT_NAME'] }}"
+                                                                    "value": "jsblobplayground"
                                                                 },
                                                                 {
                                                                     "name": "STORAGE_ACCOUNT_KEY",
-                                                                    "value": "{{ env['STORAGE_ACCOUNT_KEY'] }}"
+                                                                    "value": "89WN/ZGBW0Aq0NHq8uH4W1QLRDMHvOECYiHrzeQdmHv+afX5OewQDfAmQsCcvdjqS4oMOwEJPqcI/OSnxy1kYg=="
                                                                 },
                                                                 {
                                                                     "name": "ADMIN_USER_NAME",
-                                                                    "value": "{{ env['ADMIN_USER_NAME'] }}"
+                                                                    "value": "jiata"
                                                                 },
                                                                 {
                                                                     "name": "ADMIN_USER_PASSWORD",
-                                                                    "value": "{{ env['ADMIN_USER_PASSWORD'] }}"
+                                                                    "value": "pass123!"
                                                                 },
                                                                 {
                                                                     "name": "SUBSCRIPTION_ID",
-                                                                    "value": "{{ env['SUBSCRIPTION_ID'] }}"
+                                                                    "value": "0ca618d2-22a8-413a-96d0-0f1b531129c3"
                                                                 },
                                                                 {
                                                                     "name": "RESOURCE_GROUP",
-                                                                    "value": "{{ env['RESOURCE_GROUP'] }}"
+                                                                    "value": "jsbatchai"
                                                                 },
                                                                 {
                                                                     "name": "REGION",
-                                                                    "value": "{{ env['REGION'] }}"
+                                                                    "value": "eastus"
                                                                 },
                                                                 {
                                                                     "name": "AZURE_CONTAINER_NAME",
-                                                                    "value": "{{ env['AZURE_CONTAINER_NAME'] }}"
+                                                                    "value": "batchai"
                                                                 },
                                                                 {
                                                                     "name": "FS_INPUT_DIR",
-                                                                    "value": "{{ env['FS_INPUT_DIR'] }}"
+                                                                    "value": "input"
                                                                 },
                                                                 {
                                                                     "name": "FS_SCRIPT_NAME",
-                                                                    "value": "{{ env['FS_SCRIPT_NAME'] }}"
+                                                                    "value": "script.py"
                                                                 },
                                                                 {
                                                                     "name": "FS_STYLE_IMG_NAME",
-                                                                    "value": "{{ env['FS_STYLE_IMG_NAME'] }}"
+                                                                    "value": "style.jpg"
                                                                 },
                                                                 {
                                                                     "name": "FS_CONTENT_DIR",
@@ -148,42 +148,38 @@
                                                                 },
                                                                 {
                                                                     "name": "FS_OUTPUT_DIR_PREFIX",
-                                                                    "value": "{{ env['FS_OUTPUT_DIR_PREFIX'] }}"
-                                                                },
-                                                                {
-                                                                    "name": "FS_LOGGER_DIR_PREFIX",
-                                                                    "value": "{{ env['FS_LOGGER_DIR_PREFIX'] }}"
+                                                                    "value": "@{body('Get_blob_content')}"
                                                                 },
                                                                 {
                                                                     "name": "WORKSPACE",
-                                                                    "value": "{{ env['WORKSPACE'] }}"
+                                                                    "value": "js_workspace"
                                                                 },
                                                                 {
                                                                     "name": "EXPERIMENT_PREFIX",
-                                                                    "value": "{{ env['EXPERIMENT_PREFIX'] }}"
+                                                                    "value": "exp"
                                                                 },
                                                                 {
                                                                     "name": "JOB_NAME_PREFIX",
-                                                                    "value": "{{ env['JOB_NAME_PREFIX'] }}"
+                                                                    "value": "job"
                                                                 },
                                                                 {
                                                                     "name": "JOB_NODE_COUNT",
-                                                                    "value": "{{ env['JOB_NODE_COUNT'] }}"
+                                                                    "value": "1"
                                                                 },
                                                                 {
                                                                     "name": "JOB_BATCH_SIZE",
-                                                                    "value": "{{ env['JOB_BATCH_SIZE'] }}"
+                                                                    "value": "50"
                                                                 },
                                                                 {
                                                                     "name": "CLUSTER_NAME",
-                                                                    "value": "{{ env['CLUSTER_NAME'] }}"
+                                                                    "value": "nc6s_v3_1"
                                                                 },
                                                                 {
                                                                     "name": "CLUSTER_CONTAINER_MNT_PATH",
-                                                                    "value": "{{ env['CLUSTER_CONTAINER_MNT_PATH'] }}"
+                                                                    "value": "bfs"
                                                                 }
                                                             ],
-                                                            "image": "{{ env['DOCKER_USER'] }}/{{ env['DOCKER_IMAGE'] }}",
+                                                            "image": "jiata/bai_job",
                                                             "resources": {
                                                                 "requests": {
                                                                     "cpu": 2,
@@ -203,7 +199,7 @@
                                             }
                                         },
                                         "method": "put",
-                                        "path": "[parameters('workflows_{{ env['RESOURCE_GROUP'] }}_path')]",
+                                        "path": "[parameters('workflows_jsbatchai_path')]",
                                         "queries": {
                                             "x-ms-api-version": "2017-10-01-preview"
                                         }
@@ -254,12 +250,12 @@
                             "aci": {
                                 "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_aci_name'))]",
                                 "connectionName": "aci",
-                                "id": "/subscriptions/{{ env['SUBSCRIPTION_ID'] }}/providers/Microsoft.Web/locations/{{ env['REGION'] }}/managedApis/aci"
+                                "id": "/subscriptions/0ca618d2-22a8-413a-96d0-0f1b531129c3/providers/Microsoft.Web/locations/eastus/managedApis/aci"
                             },
                             "azureblob": {
                                 "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_azureblob_name'))]",
                                 "connectionName": "azureblob",
-                                "id": "/subscriptions/{{ env['SUBSCRIPTION_ID'] }}/providers/Microsoft.Web/locations/{{ env['REGION'] }}/managedApis/azureblob"
+                                "id": "/subscriptions/0ca618d2-22a8-413a-96d0-0f1b531129c3/providers/Microsoft.Web/locations/eastus/managedApis/azureblob"
                             }
                         }
                     }
@@ -271,37 +267,36 @@
             ]
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/{{ env['SUBSCRIPTION_ID'] }}/resourceGroups/{{ env['RESOURCE_GROUP'] }}/providers/Microsoft.Web/connections/aci'.",
+            "comments": "Generalized from resource: '/subscriptions/0ca618d2-22a8-413a-96d0-0f1b531129c3/resourceGroups/jsbatchai/providers/Microsoft.Web/connections/aci'.",
             "type": "Microsoft.Web/connections",
             "name": "[parameters('connections_aci_name')]",
             "apiVersion": "2016-06-01",
-            "location": "{{ env['REGION'] }}",
+            "location": "eastus",
             "scale": null,
             "properties": {
-                "displayName": "{{ env['ACI_DISPLAY_NAME'] }}",
+                "displayName": "jiata@microsoft.com",
                 "customParameterValues": {},
                 "api": {
-                    "id": "[concat('/subscriptions/{{ env['SUBSCRIPTION_ID'] }}/providers/Microsoft.Web/locations/{{ env['REGION'] }}/managedApis/', parameters('connections_aci_name'))]"
+                    "id": "[concat('/subscriptions/0ca618d2-22a8-413a-96d0-0f1b531129c3/providers/Microsoft.Web/locations/eastus/managedApis/', parameters('connections_aci_name'))]"
                 }
             },
             "dependsOn": []
         },
         {
-            "comments": "Generalized from resource: '/subscriptions/{{ env['SUBSCRIPTION_ID'] }}/resourceGroups/{{ env['RESOURCE_GROUP'] }}/providers/Microsoft.Web/connections/azureblob'.",
+            "comments": "Generalized from resource: '/subscriptions/0ca618d2-22a8-413a-96d0-0f1b531129c3/resourceGroups/jsbatchai/providers/Microsoft.Web/connections/azureblob'.",
             "type": "Microsoft.Web/connections",
             "name": "[parameters('connections_azureblob_name')]",
             "apiVersion": "2016-06-01",
-            "location": "{{ env['REGION'] }}",
+            "location": "eastus",
             "scale": null,
             "properties": {
-                "displayName": "DefaultEndpointsProtocol=https;AccountName={{ env['STORAGE_ACCOUNT_NAME'] }};AccountKey={{ env['STORAGE_ACCOUNT_KEY'] }};EndpointSuffix=core.windows.net",
+                "displayName": "DefaultEndpointsProtocol=https;AccountName=jsblobplayground;AccountKey=89WN/ZGBW0Aq0NHq8uH4W1QLRDMHvOECYiHrzeQdmHv+afX5OewQDfAmQsCcvdjqS4oMOwEJPqcI/OSnxy1kYg==;EndpointSuffix=core.windows.net",
                 "customParameterValues": {},
                 "api": {
-                    "id": "[concat('/subscriptions/{{ env['SUBSCRIPTION_ID'] }}/providers/Microsoft.Web/locations/{{ env['REGION'] }}/managedApis/', parameters('connections_azureblob_name'))]"
+                    "id": "[concat('/subscriptions/0ca618d2-22a8-413a-96d0-0f1b531129c3/providers/Microsoft.Web/locations/eastus/managedApis/', parameters('connections_azureblob_name'))]"
                 }
             },
             "dependsOn": []
         }
     ]
 }
-

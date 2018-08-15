@@ -13,6 +13,7 @@ Local/Working Machine:
 Accounts:
 - A Dockerhub account
 - Azure Subscription quota for GPU-enabled VMs (ideally the V100s)
+- An Azure Storage account
 
 ## 1. Setup
 

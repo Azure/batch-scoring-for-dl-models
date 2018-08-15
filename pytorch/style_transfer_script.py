@@ -373,7 +373,7 @@ if __name__ == '__main__':
   # Setup content image loader
   content_img_set = ContentDataset(
     root_dir=content_image_dir, 
-    files=content_image_list, 
+    files=content_image_list.split(','), 
     transform=loader)
   content_img_loader = DataLoader(content_img_set, batch_size=1, shuffle=False, num_workers=1)
 
@@ -403,7 +403,10 @@ if __name__ == '__main__':
   # run style transfer on each content image
   t0 = time.time()
   
+  print(len(content_img_loader))
   for content_img_batch, content_filename_batch in content_img_loader:
+
+    print("HELP: {}".format(content_filename_batch))
 
     # load image and add image to content image array
     content_img = content_img_batch[0].unsqueeze(0).to(device, torch.float)
