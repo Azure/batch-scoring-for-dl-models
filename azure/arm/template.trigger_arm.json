@@ -68,156 +68,182 @@
                         }
                     },
                     "actions": {
-                        "Create_container_group": {
-                            "runAfter": {
-                                "Get_blob_content": [
-                                    "Succeeded"
-                                ]
-                            },
-                            "type": "ApiConnection",
-                            "inputs": {
-                                "body": {
-                                    "location": "eastus",
-                                    "properties": {
-                                        "containers": [
-                                            {
-                                                "name": "@{concat('job-', toLower(replace(replace(utcNow(), ':', '-'), '.', '-')))}",
-                                                "properties": {
-                                                    "environmentVariables": [
-                                                        {
-                                                            "name": "AAD_CLIENT_ID",
-                                                            "value": "{{ env['AAD_CLIENT_ID'] }}"
-                                                        },
-                                                        {
-                                                            "name": "AAD_SECRET",
-                                                            "value": "{{ env['AAD_SECRET'] }}"
-                                                        },
-                                                        {
-                                                            "name": "AAD_TENANT",
-                                                            "value": "{{ env['AAD_TENANT'] }}"
-                                                        },
-                                                        {
-                                                            "name": "STORAGE_ACCOUNT_NAME",
-                                                            "value": "{{ env['STORAGE_ACCOUNT_NAME'] }}"
-                                                        },
-                                                        {
-                                                            "name": "STORAGE_ACCOUNT_KEY",
-                                                            "value": "{{ env['STORAGE_ACCOUNT_KEY'] }}"
-                                                        },
-                                                        {
-                                                            "name": "ADMIN_USER_NAME",
-                                                            "value": "{{ env['ADMIN_USER_NAME'] }}"
-                                                        },
-                                                        {
-                                                            "name": "ADMIN_USER_PASSWORD",
-                                                            "value": "{{ env['ADMIN_USER_PASSWORD'] }}"
-                                                        },
-                                                        {
-                                                            "name": "SUBSCRIPTION_ID",
-                                                            "value": "{{ env['SUBSCRIPTION_ID'] }}"
-                                                        },
-                                                        {
-                                                            "name": "RESOURCE_GROUP",
-                                                            "value": "{{ env['RESOURCE_GROUP'] }}"
-                                                        },
-                                                        {
-                                                            "name": "REGION",
-                                                            "value": "{{ env['REGION'] }}"
-                                                        },
-                                                        {
-                                                            "name": "AZURE_CONTAINER_NAME",
-                                                            "value": "{{ env['AZURE_CONTAINER_NAME'] }}"
-                                                        },
-                                                        {
-                                                            "name": "FS_INPUT_DIR",
-                                                            "value": "{{ env['FS_INPUT_DIR'] }}"
-                                                        },
-                                                        {
-                                                            "name": "FS_SCRIPT_NAME",
-                                                            "value": "{{ env['FS_SCRIPT_NAME'] }}"
-                                                        },
-                                                        {
-                                                            "name": "FS_STYLE_IMG_NAME",
-                                                            "value": "{{ env['FS_STYLE_IMG_NAME'] }}"
-                                                        },
-                                                        {
-                                                            "name": "FS_CONTENT_DIR",
-                                                            "value": "@{body('Get_blob_content')}"
-                                                        },
-                                                        {
-                                                            "name": "FS_OUTPUT_DIR_PREFIX",
-                                                            "value": "@{body('Get_blob_content')}"
-                                                        },
-                                                        {
-                                                            "name": "WORKSPACE",
-                                                            "value": "{{ env['WORKSPACE'] }}"
-                                                        },
-                                                        {
-                                                            "name": "EXPERIMENT_PREFIX",
-                                                            "value": "{{ env['EXPERIMENT_PREFIX'] }}"
-                                                        },
-                                                        {
-                                                            "name": "JOB_NAME_PREFIX",
-                                                            "value": "{{ env['JOB_NAME_PREFIX'] }}"
-                                                        },
-                                                        {
-                                                            "name": "JOB_NODE_COUNT",
-                                                            "value": "{{ env['JOB_NODE_COUNT'] }}"
-                                                        },
-                                                        {
-                                                            "name": "JOB_BATCH_SIZE",
-                                                            "value": "{{ env['JOB_BATCH_SIZE'] }}"
-                                                        },
-                                                        {
-                                                            "name": "CLUSTER_NAME",
-                                                            "value": "{{ env['CLUSTER_NAME'] }}"
-                                                        },
-                                                        {
-                                                            "name": "CLUSTER_CONTAINER_MNT_PATH",
-                                                            "value": "{{ env['CLUSTER_CONTAINER_MNT_PATH'] }}"
-                                                        }
-                                                    ],
-                                                    "image": "{{ env['DOCKER_USER'] }}/{{ env['DOCKER_IMAGE'] }}",
-                                                    "resources": {
-                                                        "requests": {
-                                                            "cpu": 2,
-                                                            "memoryInGB": 3.5
+                        "Condition": {
+                            "actions": {
+                                "Create_container_group": {
+                                    "runAfter": {
+                                        "Get_blob_content": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "location": "eastus",
+                                            "properties": {
+                                                "containers": [
+                                                    {
+                                                        "name": "@{concat('job-', toLower(replace(replace(utcNow(), ':', '-'), '.', '-')))}",
+                                                        "properties": {
+                                                            "environmentVariables": [
+                                                                {
+                                                                    "name": "AAD_CLIENT_ID",
+                                                                    "value": "{{ env['AAD_CLIENT_ID'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "AAD_SECRET",
+                                                                    "value": "{{ env['AAD_SECRET'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "AAD_TENANT",
+                                                                    "value": "{{ env['AAD_TENANT'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "STORAGE_ACCOUNT_NAME",
+                                                                    "value": "{{ env['STORAGE_ACCOUNT_NAME'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "STORAGE_ACCOUNT_KEY",
+                                                                    "value": "{{ env['STORAGE_ACCOUNT_KEY'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "ADMIN_USER_NAME",
+                                                                    "value": "{{ env['ADMIN_USER_NAME'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "ADMIN_USER_PASSWORD",
+                                                                    "value": "{{ env['ADMIN_USER_PASSWORD'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "SUBSCRIPTION_ID",
+                                                                    "value": "{{ env['SUBSCRIPTION_ID'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "RESOURCE_GROUP",
+                                                                    "value": "{{ env['RESOURCE_GROUP'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "REGION",
+                                                                    "value": "{{ env['REGION'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "AZURE_CONTAINER_NAME",
+                                                                    "value": "{{ env['AZURE_CONTAINER_NAME'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "FS_INPUT_DIR",
+                                                                    "value": "{{ env['FS_INPUT_DIR'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "FS_SCRIPT_NAME",
+                                                                    "value": "{{ env['FS_SCRIPT_NAME'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "FS_STYLE_IMG_NAME",
+                                                                    "value": "{{ env['FS_STYLE_IMG_NAME'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "FS_CONTENT_DIR",
+                                                                    "value": "@{body('Get_blob_content')}"
+                                                                },
+                                                                {
+                                                                    "name": "FS_OUTPUT_DIR_PREFIX",
+                                                                    "value": "{{ env['FS_OUTPUT_DIR_PREFIX'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "FS_LOGGER_DIR_PREFIX",
+                                                                    "value": "{{ env['FS_LOGGER_DIR_PREFIX'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "WORKSPACE",
+                                                                    "value": "{{ env['WORKSPACE'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "EXPERIMENT_PREFIX",
+                                                                    "value": "{{ env['EXPERIMENT_PREFIX'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "JOB_NAME_PREFIX",
+                                                                    "value": "{{ env['JOB_NAME_PREFIX'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "JOB_NODE_COUNT",
+                                                                    "value": "{{ env['JOB_NODE_COUNT'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "JOB_BATCH_SIZE",
+                                                                    "value": "{{ env['JOB_BATCH_SIZE'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "CLUSTER_NAME",
+                                                                    "value": "{{ env['CLUSTER_NAME'] }}"
+                                                                },
+                                                                {
+                                                                    "name": "CLUSTER_CONTAINER_MNT_PATH",
+                                                                    "value": "{{ env['CLUSTER_CONTAINER_MNT_PATH'] }}"
+                                                                }
+                                                            ],
+                                                            "image": "{{ env['DOCKER_USER'] }}/{{ env['DOCKER_IMAGE'] }}",
+                                                            "resources": {
+                                                                "requests": {
+                                                                    "cpu": 2,
+                                                                    "memoryInGB": 3.5
+                                                                }
+                                                            }
                                                         }
                                                     }
-                                                }
+                                                ],
+                                                "osType": "Linux",
+                                                "restartPolicy": "OnFailure"
                                             }
-                                        ],
-                                        "osType": "Linux",
-                                        "restartPolicy": "OnFailure"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['aci']['connectionId']"
+                                            }
+                                        },
+                                        "method": "put",
+                                        "path": "[parameters('workflows_{{ env['RESOURCE_GROUP'] }}_path')]",
+                                        "queries": {
+                                            "x-ms-api-version": "2017-10-01-preview"
+                                        }
                                     }
                                 },
-                                "host": {
-                                    "connection": {
-                                        "name": "@parameters('$connections')['aci']['connectionId']"
+                                "Get_blob_content": {
+                                    "runAfter": {},
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['azureblob']['connectionId']"
+                                            }
+                                        },
+                                        "method": "get",
+                                        "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(triggerBody()?['Path']))}/content",
+                                        "queries": {
+                                            "inferContentType": true
+                                        }
                                     }
-                                },
-                                "method": "put",
-                                "path": "[parameters('workflows_{{ env['RESOURCE_GROUP'] }}_path')]",
-                                "queries": {
-                                    "x-ms-api-version": "2017-10-01-preview"
                                 }
-                            }
-                        },
-                        "Get_blob_content": {
+                            },
                             "runAfter": {},
-                            "type": "ApiConnection",
-                            "inputs": {
-                                "host": {
-                                    "connection": {
-                                        "name": "@parameters('$connections')['azureblob']['connectionId']"
+                            "expression": {
+                                "and": [
+                                    {
+                                        "startsWith": [
+                                            "@triggerBody()?['Name']",
+                                            "trigger"
+                                        ]
+                                    },
+                                    {
+                                        "endsWith": [
+                                            "@triggerBody()?['Name']",
+                                            ".txt"
+                                        ]
                                     }
-                                },
-                                "method": "get",
-                                "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(triggerBody()?['Path']))}/content",
-                                "queries": {
-                                    "inferContentType": true
-                                }
-                            }
+                                ]
+                            },
+                            "type": "If"
                         }
                     },
                     "outputs": {}
