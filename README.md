@@ -12,7 +12,7 @@ Once you have your style transfer script, the end-to-end steps that this reposit
 5. Once the images are generated, they will be saved back to Blob Storage.
 6. Finally, you can download the generates frames, and stitch back the images into a video.
 
-__Requirements__
+## Requirements
 
 Local/Working Machine:
 - Ubuntu 16.04 LTS (not tested on Mac or Windows)
