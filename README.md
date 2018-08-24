@@ -1,6 +1,13 @@
 # Batch Scoring on Azure for Deep Learning Models
 
-This tutorial demonstrates how to deploy a deep learning model to Azure for batch scoring.
+This tutorial demonstrates how to do batch scoring for deep learning models on Azure.
+
+In this tutorial, we walk through the scenario of applying style transfer to a video. Once you have your style transfer script, the steps are as follows:
+1. Upload your selected style image (like a Van Gogh painting) and your style transfer PyTorch script to Blob as well.
+2. Split up your video into individual frames and upload those frames into Blob.
+3. Logic App will be triggered, and will create an ACI that runs a Batch AI job creation script.
+4. The script running in ACI will create the Batch AI jobs. Each job will apply the style transfer in parallel across the nodes of the Batch AI cluster.
+5. Once the images are generated, they will be saved back to blob.
 
 __Requirements__
 
