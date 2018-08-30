@@ -1,3 +1,8 @@
+'''
+Credit:
+This code is largely based off the work by __Alexis Jacq__ `<https://alexis-jacq.github.io>`, and is the implementation of the paper: _Image Style Transfer Using Convolutional Neural Networks_ `<https://arxiv.org/avs/1508.06576>` developed by __Leon A. Gatys__, __Alexander S. Ecker__, and __Matthias Bethge__.
+'''
+
 from __future__ import print_function
 import torch
 import torch.nn as nn
@@ -301,6 +306,12 @@ if __name__ == '__main__':
     default=300
   )
   parser.add_argument(
+    '--image-size',
+    dest='image_size',
+    type=int,
+    help='The pixel dimension of the output image (W=H)'
+  )
+  parser.add_argument(
     '--log-path',
     dest='log_path',
     help='The path of the log file to create.',
@@ -321,6 +332,7 @@ if __name__ == '__main__':
   style_weight = args.style_weight
   content_weight = args.content_weight
   num_steps = args.num_steps
+  image_size = args.image_size
   log_path = args.log_path
   log_file = args.log_file
 
@@ -361,13 +373,14 @@ if __name__ == '__main__':
   logger.debug("Images to process: %i" % num_images)
 
   # Setup image transformations
-  imsize = 512 if torch.cuda.is_available() else 128  # use small size if no gpu
-  logger.debug("GPU detected: %s, image size: %s" % (str(torch.cuda.is_available()), imsize))
+  if not image_size:
+    image_size = 512 if torch.cuda.is_available() else 128  # use small size if no gpu
+  logger.debug("GPU detected: %s, image size: %s" % (str(torch.cuda.is_available()), image_size))
 
   # setup loader
   loader = transforms.Compose([
-    transforms.Resize(imsize),  # scale imported image
-    transforms.CenterCrop(imsize), # crop on center
+    transforms.Resize(image_size),  # scale imported image
+    transforms.CenterCrop(image_size), # crop on center
     transforms.ToTensor()])  # transform it into a torch tensor
 
   # Setup content image loader
@@ -403,10 +416,7 @@ if __name__ == '__main__':
   # run style transfer on each content image
   t0 = time.time()
   
-  print(len(content_img_loader))
   for content_img_batch, content_filename_batch in content_img_loader:
-
-    print("HELP: {}".format(content_filename_batch))
 
     # load image and add image to content image array
     content_img = content_img_batch[0].unsqueeze(0).to(device, torch.float)
