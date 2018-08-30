@@ -11,6 +11,7 @@ trigger_arm.json
 *.png
 *.mov
 *.mp4
+*.mp3
 *.aac
 *.avi
 !sample*.jpg
