@@ -68,7 +68,7 @@ def create_dir(
   blob_service.create_blob_from_bytes(
     container_name=container_name,
     blob_name=os.path.join(blob_dir_name, '.tmp'),
-    blob=bytes(0)
+    blob=b'foo'
   )
 
 

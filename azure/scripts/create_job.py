@@ -159,11 +159,19 @@ if __name__ == '__main__':
         "--content-image-dir $AZ_BATCHAI_INPUT_CONTENT_IMGS " + \
         "--content-image-list {2} " \
         "--output-image-dir $AZ_BATCHAI_INPUT_OUTPUT_IMGS " + \
+				"--style-weight {3} " + \
+				"--content-weight {4} " + \
+				"--num-steps {5} " + \
+				"--image-size {6} " + \
         "--log-path $AZ_BATCHAI_INPUT_LOGGER " + \
-        "--log-file {3}").format(
+        "--log-file {7}").format(
           os.getenv('FS_SCRIPT_NAME'),
           os.getenv('FS_STYLE_IMG_NAME'),
           img_list_str,
+          os.getenv('STYLE_WEIGHT'),
+          os.getenv('CONTENT_WEIGHT'),
+          os.getenv('NUM_STEPS'),
+          os.getenv('IMAGE_SIZE'),
           job_name # use job_name as log_file name too
         ),
       job_prep_command_line="pip install scikit-image"

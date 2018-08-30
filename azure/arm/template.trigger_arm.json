@@ -181,7 +181,23 @@
                                                                 {
                                                                     "name": "CLUSTER_CONTAINER_MNT_PATH",
                                                                     "value": "{{ env['CLUSTER_CONTAINER_MNT_PATH'] }}"
-                                                                }
+                                                                },
+																																{
+																																		"name": "STYLE_WEIGHT",
+																																		"value": "{{ env['STYLE_WEIGHT'] }}"
+																																},
+																																{
+																																		"name": "CONTENT_WEIGHT",
+																																		"value": "{{ env['CONTENT_WEIGHT'] }}"
+																																},
+																																{
+																																		"name": "NUM_STEPS",
+																																		"value": "{{ env['NUM_STEPS'] }}"
+																																},
+																																{
+																																		"name": "IMAGE_SIZE",
+																																		"value": "{{ env['IMAGE_SIZE'] }}"
+																																}
                                                             ],
                                                             "image": "{{ env['DOCKER_USER'] }}/{{ env['DOCKER_IMAGE'] }}",
                                                             "resources": {
