@@ -1,8 +1,18 @@
 # Batch Scoring on Azure for Deep Learning Models
 
-This tutorial demonstrates how to deploy a deep learning model to Azure for batch scoring.
+In this repository, we use the scenario of applying style transfer onto a video (collection of images). This architecture can be generalized for any batch scoring with deep learning scenario.
 
-__Requirements__
+![Reference Architecture Diagram](/assets/batch-scoring-for-dl-models.PNG)
+
+The end-to-end steps that this repository covers are as follows:
+1. Upload your selected style image (like a Van Gogh painting) and your style transfer script to Blob Storage.
+2. Split up your video into individual frames and upload those frames into Blob Storage.
+3. Logic App will then be triggered, and will create an ACI that runs a Batch AI job creation script.
+4. The script running in ACI will create the Batch AI jobs. Each job will apply the style transfer in parallel across the nodes of the Batch AI cluster.
+5. Once the images are generated, they will be saved back to Blob Storage.
+6. Finally, you can download the generates frames, and stitch back the images into a video.
+
+## Requirements
 
 Local/Working Machine:
 - Ubuntu 16.04 LTS (not tested on Mac or Windows)
@@ -14,6 +24,7 @@ Accounts:
 - A Dockerhub account
 - Azure Subscription quota for GPU-enabled VMs (ideally the V100s)
 - An Azure Storage account
+- A Blob Storage account
 
 ## 1. Setup
 
