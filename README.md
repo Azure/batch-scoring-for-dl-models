@@ -24,13 +24,13 @@ Accounts:
 - A Dockerhub account
 - Azure Subscription quota for GPU-enabled VMs (ideally the V100s)
 - An Azure Storage account
-- A Blob Storage account
 
 ## 1. Setup
 
 1. Clone the repo `git clone <repo-name>`
 2. `cd` into the repo
 3. Setup your virtual env `python -m venv <virtual-env-name>`
+4. Activate your environment `source <virtual-env-name>/bin/activate`
 4. Install packages `pip install -r requirements.txt`
 
 ## 2. Set up environment variables & start the Jupyter Notebook
