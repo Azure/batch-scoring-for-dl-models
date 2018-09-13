@@ -16,14 +16,13 @@ The end-to-end steps that this repository covers are as follows:
 
 Local/Working Machine:
 - Ubuntu 16.04 LTS (not tested on Mac or Windows)
-- Python 3.4 or greater
-- Docker 1.0 or greater
+- [Conda](https://conda.io/docs/) v4.5.4 or greater (<v4.5.4 is untested)
+- [Docker 1.0](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1) or greater
 - Ideally GPU enabled for local testing
 
 Accounts:
 - A Dockerhub account
 - Azure Subscription quota for GPU-enabled VMs (ideally the V100s)
-- An Azure Storage account
 
 ## 1. Setup
 
