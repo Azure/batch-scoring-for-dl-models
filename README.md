@@ -18,6 +18,8 @@ Local/Working Machine:
 - Ubuntu 16.04 LTS (not tested on Mac or Windows)
 - [Conda](https://conda.io/docs/) v4.5.4 or greater (<v4.5.4 is untested)
 - [Docker 1.0](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1) or greater
+- [AzCopy](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-linux?toc=%2fazure%2fstorage%2ffiles%2ftoc.json)
+- [ffmpeg](https://tecadmin.net/install-ffmpeg-on-linux/)
 - Ideally GPU enabled for local testing
 
 Accounts:
