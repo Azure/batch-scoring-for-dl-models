@@ -17,7 +17,7 @@ The end-to-end steps that this repository covers are as follows:
 Local/Working Machine:
 - Ubuntu >=16.04LTS (not tested on Mac or Windows)
 - [Conda >=4.5.4](https://conda.io/docs/)
-- [Docker 1.0](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1) or greater
+- [Docker >=1.0](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1) 
 - [AzCopy >=7.0.0](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-linux?toc=%2fazure%2fstorage%2ffiles%2ftoc.json)
 - [ffmpeg >=3.4.4](https://tecadmin.net/install-ffmpeg-on-linux/)
 - [Azure CLI >=2.0](https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest)
@@ -39,6 +39,7 @@ Accounts:
 
 1. Copy __template.env__ to __.env__ and fill out the configurations and credentials in __.env__
 2. Run `source .env` to load all the configurations as environment variables
+3. Make sure you are logged in to both the __az cli__ and __docker ce__
 3. Run `jupyter notebook` in the root directory and run through [style_transfer.ipynb](./style_transfer.ipynb).
 
 The Jupyter notebook will take you through setting up Azure BatchAI with a file share, ACI, and Logic Apps. The notebook will also show your how to setup your training and scoring script to test locally.
