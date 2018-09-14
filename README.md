@@ -15,11 +15,12 @@ The end-to-end steps that this repository covers are as follows:
 ## Requirements
 
 Local/Working Machine:
-- Ubuntu 16.04 LTS (not tested on Mac or Windows)
-- [Conda](https://conda.io/docs/) v4.5.4 or greater (<v4.5.4 is untested)
+- Ubuntu >=16.04LTS (not tested on Mac or Windows)
+- [Conda >=4.5.4](https://conda.io/docs/)
 - [Docker 1.0](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1) or greater
-- [AzCopy](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-linux?toc=%2fazure%2fstorage%2ffiles%2ftoc.json)
-- [ffmpeg](https://tecadmin.net/install-ffmpeg-on-linux/)
+- [AzCopy >=7.0.0](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-linux?toc=%2fazure%2fstorage%2ffiles%2ftoc.json)
+- [ffmpeg >=3.4.4](https://tecadmin.net/install-ffmpeg-on-linux/)
+- [Azure CLI >=2.0](https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest)
 - Ideally GPU enabled for local testing
 
 Accounts:
