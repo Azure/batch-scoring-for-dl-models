@@ -24,8 +24,10 @@ Local/Working Machine:
 - Ideally GPU enabled for local testing
 
 Accounts:
-- A Dockerhub account
-- Azure Subscription quota for GPU-enabled VMs (ideally the V100s)
+- Dockerhub account
+- Azure Subscription (and also a quota for GPU-enabled VMs)
+
+While it is not required, it is also useful to use the [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/) to inspect your storage account.
 
 ## 1. Setup
 
