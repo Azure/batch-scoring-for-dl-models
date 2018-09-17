@@ -16,16 +16,16 @@ The end-to-end steps that this repository covers are as follows:
 
 Local/Working Machine:
 - Ubuntu >=16.04LTS (not tested on Mac or Windows)
+- [NVIDIA Drivers on GPU enabled machine](https://linuxconfig.org/how-to-install-the-nvidia-drivers-on-ubuntu-18-04-bionic-beaver-linux) _(Optional)_ 
 - [Conda >=4.5.4](https://conda.io/docs/)
 - [Docker >=1.0](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-ce-1) 
 - [AzCopy >=7.0.0](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-linux?toc=%2fazure%2fstorage%2ffiles%2ftoc.json)
 - [ffmpeg >=3.4.4](https://tecadmin.net/install-ffmpeg-on-linux/)
 - [Azure CLI >=2.0](https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest)
-- Ideally GPU enabled for local testing
 
 Accounts:
-- Dockerhub account
-- Azure Subscription (and also a quota for GPU-enabled VMs)
+- [Dockerhub account](https://hub.docker.com/)
+- [Azure Subscription](https://azure.microsoft.com/en-us/free/) (with a quota for GPU-enabled VMs)
 
 While it is not required, it is also useful to use the [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/) to inspect your storage account.
 
