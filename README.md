@@ -33,9 +33,8 @@ While it is not required, it is also useful to use the [Azure Storage Explorer](
 
 1. Clone the repo `git clone <repo-name>`
 2. `cd` into the repo
-3. Setup your virtual env `python -m venv <virtual-env-name>`
-4. Activate your environment `source <virtual-env-name>/bin/activate`
-4. Install packages `pip install -r requirements.txt`
+3. Setup your conda env using the _environment.yml_ file `conda env create -f environment.yml` - this will create a conda environment called __batchscoringdl__
+4. Activate your environment `source activate batchscoringdl`
 
 ## 2. Set up environment variables & start the Jupyter Notebook
 
