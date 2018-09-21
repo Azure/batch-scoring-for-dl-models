@@ -25,7 +25,7 @@ Local/Working Machine:
 
 Accounts:
 - [Dockerhub account](https://hub.docker.com/)
-- [Azure Subscription](https://azure.microsoft.com/en-us/free/) (with a quota for GPU-enabled VMs)
+- [Azure Subscription](https://azure.microsoft.com/en-us/free/) (with a [quota](https://docs.microsoft.com/en-us/azure/azure-supportability/resource-manager-core-quotas-request) for GPU-enabled VMs)
 
 While it is not required, it is also useful to use the [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/) to inspect your storage account.
 
