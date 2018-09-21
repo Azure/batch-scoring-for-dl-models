@@ -195,7 +195,7 @@
 																																		"value": "{{ env['IMAGE_SIZE'] }}"
 																																}
                                                             ],
-                                                            "image": "{{ env['DOCKER_USER'] }}/{{ env['DOCKER_IMAGE'] }}",
+                                                            "image": "{{ env['DOCKER_USER'] }}/{{ env['DOCKER_IMAGE_TAG'] }}",
                                                             "resources": {
                                                                 "requests": {
                                                                     "cpu": 2,
