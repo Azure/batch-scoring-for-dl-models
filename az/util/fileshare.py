@@ -11,6 +11,10 @@ def list_blobs_in_dir(
   '''
   TODO
   '''
+  container_name = container_name or \
+    os.getenv('AZURE_CONTAINER_NAME')
+  assert container_name
+
   blob_list = blob_service.list_blobs(container_name, blob_dir_name)
   blobs = [blob.name.split('/')[1] for blob in blob_list]
   return blobs

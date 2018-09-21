@@ -1,3 +1,0 @@
-azure==3.0.0
-azure-mgmt-batchai==2.0.0
-iteration-utilities==0.7.0
