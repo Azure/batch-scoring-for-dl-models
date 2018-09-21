@@ -18,5 +18,5 @@ mv .t/style_images pytorch/images
 rm -rf .t
 
 # remove generated arm template for logic app deployment
-rm azure/arm/trigger_arm.json
+rm logic_app.json
 
