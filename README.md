@@ -35,15 +35,9 @@ While it is not required, it is also useful to use the [Azure Storage Explorer](
 2. `cd` into the repo
 3. Setup your conda env using the _environment.yml_ file `conda env create -f environment.yml` - this will create a conda environment called __batchscoringdl__
 4. Activate your environment `source activate batchscoringdl`
-
-## 2. Set up environment variables & start the Jupyter Notebook
-
-1. Copy __template.env__ to __.env__ and fill out the configurations and credentials in __.env__
-2. Run `source .env` to load all the configurations as environment variables
-3. Make sure you are logged in to both the __az cli__ and __docker ce__
-3. Run `jupyter notebook` in the root directory and run through [style_transfer.ipynb](./style_transfer.ipynb).
-
-The Jupyter notebook will take you through setting up Azure BatchAI with a file share, ACI, and Logic Apps. The notebook will also show your how to setup your training and scoring script to test locally.
+5. Log in to Azure using the __az cli__ `az login`
+6. Log in to Docker using the docker cli `docker login`
+7. Run through the notebooks starting with [01_apply_style_transfer_locally](./01_apply_style_transfer_locally.ipynb).
 
 # Contributing
 

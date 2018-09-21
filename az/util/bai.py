@@ -7,12 +7,12 @@ import os
 
 
 def setup_bai(
-    aad_client_id: str = os.getenv('AAD_CLIENT_ID'),
-    aad_secret: str = os.getenv('AAD_SECRET'),
-    aad_tenant: str = os.getenv('AAD_TENANT'),
-    subscription_id: str = os.getenv('SUBSCRIPTION_ID'),
-    rg: str = os.getenv('RESOURCE_GROUP'),
-    location: str = os.getenv('REGION')
+    aad_client_id: str = None,
+    aad_secret: str = None,
+    aad_tenant: str = None,
+    subscription_id: str = None,
+    rg: str = None,
+    location: str = None,
   ) -> 'batchai.BatchAIManagementClient':
   '''
   Setup credentials, batch AI client, and the resource
@@ -43,6 +43,20 @@ def setup_bai(
       AI resources.
 
   '''
+  aad_client_id = aad_client_id or os.getenv('AAD_CLIENT_ID')
+  aad_tenant = aad_tenant or os.getenv('AAD_TENANT')
+  aad_secret = aad_secret or os.getenv('AAD_SECRET')
+  subscription_id = subscription_id or os.getenv('SUBSCRIPTION_ID')
+  rg = rg or os.getenv('RESOURCE_GROUP')
+  location = location or os.getenv('REGION')
+
+  assert aad_client_id
+  assert aad_tenant
+  assert aad_secret
+  assert subscription_id
+  assert rg 
+  assert location
+
   creds = ServicePrincipalCredentials(
     client_id=aad_client_id,
     secret=aad_secret,
@@ -70,8 +84,8 @@ def setup_bai(
 def get_cluster(
     batchai_client: 'BatchAIManagementClient',
     name: str,
-    rg: str = os.getenv('RESOURCE_GROUP'),
-    ws: str = os.getenv('WORKSPACE'),
+    rg: str = None,
+    ws: str = None
   ) -> 'batchai.models.Cluster':
   '''
   Get a BatchAI cluster by cluster name
@@ -94,6 +108,11 @@ def get_cluster(
       is provided by the BatchAI management sdk.
 
   '''
+  rg = rg or os.getenv('RESOURCE_GROUP')
+  ws = ws or os.getenv('WORKSPACE')
+  assert rg
+  assert ws
+
   return batchai_client.clusters.get(
     resource_group_name=rg,
     workspace_name=ws,
@@ -143,8 +162,8 @@ def create_job_params(
     container_image: str,
     command_line: str,
     job_prep_command_line: str = '',
-    node_count: int = os.getenv('JOB_NODE_COUNT'),
-    cluster_mnt_path: str = os.getenv('CLUSTER_CONTAINER_MNT_PATH')
+    node_count: int = 1,
+    cluster_mnt_path: str = None
   ):
   '''
   Create the parameter object for the Batch AI job.
@@ -175,6 +194,10 @@ def create_job_params(
       object to pass into the job during creation.
 
   '''
+  cluster_mnt_path = cluster_mnt_path or \
+    os.getenv('CLUSTER_CONTAINER_MNT_PATH')
+  assert cluster_mnt_path
+
   return batchai.models.JobCreateParameters(
     cluster=batchai.models.ResourceId(id=cluster.id),
     node_count=node_count,
@@ -241,9 +264,9 @@ def create_job(
 
 def create_workspace(
     batchai_client: 'BatchAIManagementClient',
-    rg: str = os.getenv('RESOURCE_GROUP'),
-    ws: str = os.getenv('WORKSPACE'),
-    location: str = os.getenv('REGION')
+    rg: str = None,
+    ws: str = None,
+    location: str = None
   ) -> 'batchai.models.WorkSpace':
   '''
   Create a BatchAI Workspace 
@@ -267,6 +290,14 @@ def create_workspace(
       that is provided by the BatchAI management sdk.
 
   '''
+  rg = rg or os.getenv('RESOURCE_GROUP')
+  ws = ws or os.getenv('WORKSPACE')
+  location = location or os.getenv('REGION')
+  assert rg
+  assert ws
+  assert location
+
+
   return batchai_client \
     .workspaces \
     .create(rg, ws, location) \
@@ -276,29 +307,19 @@ def create_workspace(
 def create_autoscale_cluster(
     batchai_client: 'BatchAIManagementClient',
     cluster_name: str,
-    vm_size: str = os.getenv('CLUSTER_VM_SIZE'),
-    vm_priority: str = \
-      os.getenv('CLUSTER_VM_PRIORITY'),
-    min_nodes: int = \
-      os.getenv('CLUSTER_MINIMUM_NODE_COUNT'), 
-    max_nodes: int = \
-      os.getenv('CLUSTER_MAXIMUM_NODE_COUNT'),
-    initial_nodes: int = \
-      os.getenv('CLUSTER_INITIAL_NODE_COUNT'),
-    ws: str = os.getenv('WORKSPACE'),
-    rg: str = os.getenv('RESOURCE_GROUP'),
-    storage_account_name: str = \
-      os.getenv('STORAGE_ACCOUNT_NAME'),
-    storage_account_key: str = \
-      os.getenv('STORAGE_ACCOUNT_KEY'),
-    container_name: str = \
-      os.getenv('AZURE_CONTAINER_NAME'),
-    cluster_mnt_path: str = \
-      os.getenv('CLUSTER_CONTAINER_MNT_PATH'),
-    admin_user_name: str = \
-      os.getenv('ADMIN_USER_NAME'),
-    admin_user_password: str = \
-      os.getenv('ADMIN_USER_PASSWORD')
+    vm_size: str = None,
+    vm_priority: str = None,
+    min_nodes: int = None,
+    max_nodes: int = None,
+    initial_nodes: int = None,
+    ws: str = None,
+    rg: str = None,
+    storage_account_name: str = None,
+    storage_account_key: str = None,
+    container_name: str = None,
+    cluster_mnt_path: str = None,
+    admin_user_name: str = None,
+    admin_user_password: str = None
   ) -> None:
   '''
   Create an autoscale Batch AI cluster
@@ -345,6 +366,44 @@ def create_autoscale_cluster(
   Returns:
     None
   '''
+  vm_size = vm_size or \
+    os.getenv('CLUSTER_VM_SIZE')
+  vm_priority = vm_priority or \
+    os.getenv('CLUSTER_VM_PRIORITY')
+  min_nodes = min_nodes if type(min_nodes) is int else \
+    os.getenv('CLUSTER_MINIMUM_NODE_COUNT')
+  max_nodes = max_nodes if type(max_nodes) is int else \
+    os.getenv('CLUSTER_MAXIMUM_NODE_COUNT')
+  initial_nodes = initial_nodes if type(initial_nodes) is int else \
+    os.getenv('CLUSTER_INITIAL_NODE_COUNT')
+  ws = ws or os.getenv('WORKSPACE')
+  rg = rg or os.getenv('RESOURCE_GROUP')
+  storage_account_name = storage_account_name or \
+    os.getenv('STORAGE_ACCOUNT_NAME'),
+  storage_account_key = storage_account_key or \
+    os.getenv('STORAGE_ACCOUNT_KEY')
+  container_name = container_name or \
+    os.getenv('AZURE_CONTAINER_NAME')
+  cluster_mnt_path = cluster_mnt_path or \
+    os.getenv('CLUSTER_CONTAINER_MNT_PATH')
+  admin_user_name = admin_user_name or \
+    os.getenv('ADMIN_USER_NAME')
+  admin_user_password = admin_user_password or \
+    os.getenv('ADMIN_USER_PASSWORD')
+
+  assert vm_size
+  assert vm_priority
+  assert min_nodes or 0
+  assert max_nodes or 0
+  assert initial_nodes or 0
+  assert ws
+  assert rg
+  assert storage_account_name
+  assert storage_account_key
+  assert container_name
+  assert cluster_mnt_path
+  assert admin_user_name
+  assert admin_user_password
 
   volumes = batchai.models.MountVolumes(
     azure_blob_file_systems=[

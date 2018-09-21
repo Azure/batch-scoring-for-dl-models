@@ -131,16 +131,12 @@
                                                                     "value": "{{ env['AZURE_CONTAINER_NAME'] }}"
                                                                 },
                                                                 {
-                                                                    "name": "FS_INPUT_DIR",
-                                                                    "value": "{{ env['FS_INPUT_DIR'] }}"
+                                                                    "name": "FS_SCRIPT",
+                                                                    "value": "{{ env['FS_SCRIPT'] }}"
                                                                 },
                                                                 {
-                                                                    "name": "FS_SCRIPT_NAME",
-                                                                    "value": "{{ env['FS_SCRIPT_NAME'] }}"
-                                                                },
-                                                                {
-                                                                    "name": "FS_STYLE_IMG_NAME",
-                                                                    "value": "{{ env['FS_STYLE_IMG_NAME'] }}"
+                                                                    "name": "FS_STYLE_IMG",
+                                                                    "value": "{{ env['FS_STYLE_IMAGE'] }}"
                                                                 },
                                                                 {
                                                                     "name": "FS_CONTENT_DIR",
