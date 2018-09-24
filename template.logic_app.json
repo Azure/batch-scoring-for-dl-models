@@ -135,7 +135,7 @@
                                                                     "value": "{{ env['FS_SCRIPT'] }}"
                                                                 },
                                                                 {
-                                                                    "name": "FS_STYLE_IMG",
+                                                                    "name": "FS_STYLE_IMAGE",
                                                                     "value": "{{ env['FS_STYLE_IMAGE'] }}"
                                                                 },
                                                                 {

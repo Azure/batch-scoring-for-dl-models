@@ -17,6 +17,12 @@ mv .t/sample_content_images pytorch/images
 mv .t/style_images pytorch/images
 rm -rf .t
 
+# remove files used to create docker image
+rm az/Dockerfile
+rm az/requirements.txt
+
 # remove generated arm template for logic app deployment
 rm logic_app.json
 
+# remove generated trigger file
+rm trigger_0.txt
