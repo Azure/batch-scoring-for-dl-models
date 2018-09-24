@@ -2,7 +2,7 @@
 
 In this repository, we use the scenario of applying style transfer onto a video (collection of images). This architecture can be generalized for any batch scoring with deep learning scenario.
 
-![Reference Architecture Diagram](/assets/batch-scoring-for-dl-models.PNG)
+![Reference Architecture Diagram](https://happypathspublic.blob.core.windows.net/assets/batch_scoring_for_dl/arhictecture_diagram)
 
 The end-to-end steps that this repository covers are as follows:
 1. Upload your selected style image (like a Van Gogh painting) and your style transfer script to Blob Storage.
@@ -29,7 +29,7 @@ Accounts:
 
 While it is not required, it is also useful to use the [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/) to inspect your storage account.
 
-## 1. Setup
+## Setup
 
 1. Clone the repo `git clone <repo-name>`
 2. `cd` into the repo
@@ -37,7 +37,17 @@ While it is not required, it is also useful to use the [Azure Storage Explorer](
 4. Activate your environment `source activate batchscoringdl`
 5. Log in to Azure using the __az cli__ `az login`
 6. Log in to Docker using the docker cli `docker login`
-7. Run through the notebooks starting with [01_apply_style_transfer_locally](./01_apply_style_transfer_locally.ipynb).
+
+## Run through the following notebooks:
+
+1. [Apply style transfer locally](./01_apply_style_transfer_locally.ipynb)
+2. [Download and preprocess the video](./02_download_and_preprocess_the_video.ipynb)
+3. [Setup Azure](./03_setup_azure.ipynb)
+4. [Run style transfer at scale](./04_run_style_transfer_at_scale.ipynb)
+5. [Run the Batch AI job from Docker](./05_run_the_batch_ai_job_from_docker.ipynb)
+6. [Deploy and test Logic Apps](./06_deploy_and_test_logic_apps.ipynb)
+7. [Stitch together the results](./07_stitch_together_the_results.ipynb)
+
 
 # Contributing
 
