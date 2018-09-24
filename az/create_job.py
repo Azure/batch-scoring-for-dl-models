@@ -106,7 +106,8 @@ if __name__ == '__main__':
 
   # set up input directories to access for the jobs
   mapping = [
-    ('FILES', os.getenv('FS_INPUT_DIR')),
+    ('STYLE_IMG', os.getenv('FS_STYLE_IMAGE')),
+    ('SCRIPT', os.getenv('FS_SCRIPT')),
     ('CONTENT_IMGS', content_images_blob_dir),
     ('OUTPUT_IMGS', output_images_dir),
     ('LOGGER', logger_dir)
@@ -154,8 +155,8 @@ if __name__ == '__main__':
       input_dirs=input_dirs,
       output_dirs=None,
       container_image="pytorch/pytorch:0.4_cuda9_cudnn7",
-      command_line=("python $AZ_BATCHAI_INPUT_FILES/{0} " + \
-        "--style-image $AZ_BATCHAI_INPUT_FILES/{1} " + \
+      command_line=("python $AZ_BATCHAI_INPUT_SCRIPT " + \
+        "--style-image $AZ_BATCHAI_INPUT_STYLE_IMG " + \
         "--content-image-dir $AZ_BATCHAI_INPUT_CONTENT_IMGS " + \
         "--content-image-list {2} " \
         "--output-image-dir $AZ_BATCHAI_INPUT_OUTPUT_IMGS " + \
@@ -182,11 +183,12 @@ if __name__ == '__main__':
       bai_client, 
       job_name, 
       job_params, 
-      experiment_name
+      experiment_name,
+      async_job=True
     )
 
     logger.debug("Created job #{}, named {}, with {} images." \
-      .format(group_i, job.name, len(img_name_group))
+      .format(group_i, job_name, len(img_name_group))
     )
 
   # log total time to create jobs

@@ -226,6 +226,7 @@ def create_job(
     experiment_name: str,
     rg: str = os.getenv('RESOURCE_GROUP'),
     ws: str = os.getenv('WORKSPACE'),
+    async_job: bool = True
   ) -> 'batchai.models.Job':
   '''
   Create a BatchAI Experiment (which is the logical
@@ -253,13 +254,17 @@ def create_job(
       that is provided by the BatchAI management sdk.
 
   '''
-  return batchai_client.jobs.create(
+  job = batchai_client.jobs.create(
     resource_group_name=rg,
     workspace_name=ws,
     experiment_name=experiment_name,
     job_name=job_name, 
     parameters=job_params
-  ).result()
+  )
+  if not async_job:
+    return job.result()
+  else:
+    return job
 
 
 def create_workspace(
@@ -379,7 +384,7 @@ def create_autoscale_cluster(
   ws = ws or os.getenv('WORKSPACE')
   rg = rg or os.getenv('RESOURCE_GROUP')
   storage_account_name = storage_account_name or \
-    os.getenv('STORAGE_ACCOUNT_NAME'),
+    os.getenv('STORAGE_ACCOUNT_NAME')
   storage_account_key = storage_account_key or \
     os.getenv('STORAGE_ACCOUNT_KEY')
   container_name = container_name or \
