@@ -4,13 +4,27 @@ In this repository, we use the scenario of applying style transfer onto a video 
 
 ![Reference Architecture Diagram](https://happypathspublic.blob.core.windows.net/assets/batch_scoring_for_dl/arhictecture_diagram)
 
-The end-to-end steps that this repository covers are as follows:
+The above architecture works as follows:
 1. Upload your selected style image (like a Van Gogh painting) and your style transfer script to Blob Storage.
 2. Split up your video into individual frames and upload those frames into Blob Storage.
 3. Logic App will then be triggered, and will create an ACI that runs a Batch AI job creation script.
 4. The script running in ACI will create the Batch AI jobs. Each job will apply the style transfer in parallel across the nodes of the Batch AI cluster.
 5. Once the images are generated, they will be saved back to Blob Storage.
 6. Finally, you can download the generates frames, and stitch back the images into a video.
+
+## Style Transfer for Video
+
+| Style image: | Input/content video: | Output video: | 
+|--------|--------|---------|
+| <img src="https://happypathspublic.blob.core.windows.net/assets/batch_scoring_for_dl/style_image.jpg" width="300"> | [<img src="https://happypathspublic.blob.core.windows.net/assets/batch_scoring_for_dl/input_video_image_0.jpg" width="300" height="300">](https://happypathspublic.blob.core.windows.net/assets/batch_scoring_for_dl/input_video.mp4 "Input Video") | [<img src="https://happypathspublic.blob.core.windows.net/assets/batch_scoring_for_dl/output_video_image_0.jpg" width="300" height="300">](https://happypathspublic.blob.core.windows.net/assets/batch_scoring_for_dl/output_video.mp4 "Output Video") |
+
+
+
+
+
+
+
+
 
 ## Requirements
 
