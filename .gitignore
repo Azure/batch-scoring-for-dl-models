@@ -4,7 +4,7 @@
 *__pycache__
 
 # dont commit files that could have credentials in them
-trigger_arm.json
+# trigger_arm.json
 
 # dont commit images or videos
 *.jpg
