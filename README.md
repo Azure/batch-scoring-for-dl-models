@@ -57,6 +57,8 @@ While it is not required, it is also useful to use the [Azure Storage Explorer](
 6. [Deploy and test Logic Apps](./06_deploy_and_test_logic_apps.ipynb)
 7. [Stitch together the results](./07_stitch_together_the_results.ipynb)
 
+#### Clean up
+Please refer to the end of [notebook 7](./07_stitch_together_the_results.ipynb) to clean up your Azure resources. If you want to keep certain resources, you can also use the `az cli` or the Azure portal to cherry pick the ones you want to deprovision.
 
 # Contributing
 
