@@ -1,7 +1,9 @@
 # Batch Scoring on Azure for Deep Learning Models
 
+## Overview
 In this repository, we use the scenario of applying style transfer onto a video (collection of images). This architecture can be generalized for any batch scoring with deep learning scenario.
 
+## Design
 ![Reference Architecture Diagram](https://happypathspublic.blob.core.windows.net/assets/batch_scoring_for_dl/arhictecture_diagram)
 
 The above architecture works as follows:
@@ -12,13 +14,13 @@ The above architecture works as follows:
 5. Once the images are generated, they will be saved back to Blob Storage.
 6. Finally, you can download the generates frames, and stitch back the images into a video.
 
-## Style Transfer for Video
+### Style Transfer for Video
 
 | Style image: | Input/content video: | Output video: | 
 |--------|--------|---------|
 | <img src="https://happypathspublic.blob.core.windows.net/assets/batch_scoring_for_dl/style_image.jpg" width="300"> | [<img src="https://happypathspublic.blob.core.windows.net/assets/batch_scoring_for_dl/input_video_image_0.jpg" width="300" height="300">](https://happypathspublic.blob.core.windows.net/assets/batch_scoring_for_dl/input_video.mp4 "Input Video") *click to view video* | [<img src="https://happypathspublic.blob.core.windows.net/assets/batch_scoring_for_dl/output_video_image_0.jpg" width="300" height="300">](https://happypathspublic.blob.core.windows.net/assets/batch_scoring_for_dl/output_video.mp4 "Output Video") *click to view video* |
 
-## Requirements
+## Prerequisites
 
 Local/Working Machine:
 - Ubuntu >=16.04LTS (not tested on Mac or Windows)
@@ -44,8 +46,9 @@ While it is not required, it is also useful to use the [Azure Storage Explorer](
 5. Log in to Azure using the __az cli__ `az login`
 6. Log in to Docker using the docker cli `docker login`
 
-## Run through the following notebooks:
+## Steps:
 
+#### Run through the following notebooks:
 1. [Apply style transfer locally](./01_apply_style_transfer_locally.ipynb)
 2. [Download and preprocess the video](./02_download_and_preprocess_the_video.ipynb)
 3. [Setup Azure](./03_setup_azure.ipynb)
