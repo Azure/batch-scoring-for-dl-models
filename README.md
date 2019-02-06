@@ -1,3 +1,5 @@
+# This repository is no longer actively maintained. We recommend seeing the updated versions leveraging Azure Machine Learning or Azure Kubernetes Service described in more detail [here](https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/ai/batch-scoring-deep-learning).
+
 # Batch Scoring on Azure for Deep Learning Models
 
 ## Overview
